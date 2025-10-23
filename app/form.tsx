@@ -16,6 +16,8 @@ interface FormData {
   floor: string;
   apartmentNumber: string;
   address: string;
+  cadastralCode: string;
+  buildingYear: string;
   pdfAccepted: boolean;
   paymentPlan: "monthly" | "quarterly" | "semi-annual" | "annual";
 }
@@ -52,6 +54,8 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
     floor: "",
     apartmentNumber: "",
     address: "",
+    cadastralCode: "",
+    buildingYear: "",
     pdfAccepted: false,
     paymentPlan: initialData?.paymentPlan || "monthly",
   });
@@ -131,6 +135,8 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
       formDataToSend.append("floor", formData.floor);
       formDataToSend.append("apartmentNumber", formData.apartmentNumber);
       formDataToSend.append("address", formData.address);
+      formDataToSend.append("cadastralCode", formData.cadastralCode);
+      formDataToSend.append("buildingYear", formData.buildingYear);
       formDataToSend.append("paymentPlan", formData.paymentPlan);
 
       if (formData.idPhotoFile) {
@@ -333,6 +339,8 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
               />
             </div>
 
+           
+
             <div className="twoColumn">
               <div className="formGroup">
                 <label>სართული *</label>
@@ -357,6 +365,31 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
                   required
                 />
               </div>
+               <div className="twoColumn">
+              <div className="formGroup">
+                <label>საკადასტრო კოდი</label>
+                <input
+                  type="text"
+                  name="cadastralCode"
+                  value={formData.cadastralCode}
+                  onChange={handleInputChange}
+                  placeholder="მაგ: 01-12-34-567-890"
+                />
+              </div>
+
+              <div className="formGroup">
+                <label>შენობის აშენების წელი</label>
+                <input
+                  type="number"
+                  name="buildingYear"
+                  value={formData.buildingYear}
+                  onChange={handleInputChange}
+                  placeholder="მაგ: 2015"
+                  min="1900"
+                  max={new Date().getFullYear()}
+                />
+              </div>
+            </div>
             </div>
 
             <div className="formGroup">

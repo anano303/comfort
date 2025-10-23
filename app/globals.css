@@ -525,6 +525,7 @@ h3 {
 .formGroup input[type="text"],
 .formGroup input[type="tel"],
 .formGroup input[type="email"],
+.formGroup input[type="number"],
 .formGroup input[type="file"] {
   padding: 12px;
   border: 1px solid #ddd;
@@ -548,6 +549,7 @@ h3 {
 .formGroup input[type="text"]:focus,
 .formGroup input[type="tel"]:focus,
 .formGroup input[type="email"]:focus,
+.formGroup input[type="number"]:focus,
 .formGroup input[type="file"]:focus {
   outline: none;
   border-color: var(--primary-teal);
@@ -957,6 +959,7 @@ h3 {
 .formGroup input[type="text"],
 .formGroup input[type="tel"],
 .formGroup input[type="email"],
+.formGroup input[type="number"],
 .formGroup input[type="file"] {
   padding: 12px;
   border: 1px solid #ddd;
@@ -969,6 +972,7 @@ h3 {
 .formGroup input[type="text"]:focus,
 .formGroup input[type="tel"]:focus,
 .formGroup input[type="email"]:focus,
+.formGroup input[type="number"]:focus,
 .formGroup input[type="file"]:focus {
   outline: none;
   border-color: var(--primary-teal);
