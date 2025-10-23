@@ -339,8 +339,6 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
               />
             </div>
 
-           
-
             <div className="twoColumn">
               <div className="formGroup">
                 <label>სართული *</label>
@@ -365,7 +363,9 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
                   required
                 />
               </div>
-               <div className="twoColumn">
+            </div>
+
+            <div className="twoColumn">
               <div className="formGroup">
                 <label>საკადასტრო კოდი</label>
                 <input
@@ -389,7 +389,6 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
                   max={new Date().getFullYear()}
                 />
               </div>
-            </div>
             </div>
 
             <div className="formGroup">
