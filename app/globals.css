@@ -220,6 +220,56 @@ h3 {
   border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.breakdownToggle {
+  width: 100%;
+  background: rgba(23, 166, 151, 0.15);
+  border: 1px solid rgba(23, 166, 151, 0.3);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "BPGArialCaps", "BPGArial", sylfaen, arial, tahoma, sans-serif;
+  transition: all 0.3s ease;
+}
+
+.breakdownToggle:hover {
+  background: rgba(23, 166, 151, 0.25);
+  border-color: rgba(23, 166, 151, 0.5);
+}
+
+.breakdownToggle .arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  font-size: 12px;
+}
+
+.breakdownToggle .arrow.open {
+  transform: rotate(180deg);
+}
+
+.breakdownContent {
+  max-height: 600px;
+  overflow-y: auto;
+  margin-top: 12px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 600px;
+  }
+}
+
 .paymentBreakdown h3 {
   font-size: 14px;
   font-weight: 600;

@@ -13,15 +13,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://primeinsurance.ge"),
   title: "PRIME Insurance - ბინის დაზღვევა",
   description:
     "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
+  icons: {
+    icon: "/FacebookShare.png",
+  },
   openGraph: {
     title: "PRIME Insurance - ბინის დაზღვევა",
-    description: "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
+    description:
+      "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
     images: [
       {
-        url: "/primeLogo.png",
+        url: "/FacebookShare.png",
         width: 200,
         height: 200,
         alt: "PRIME Insurance Logo",
@@ -33,8 +38,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "PRIME Insurance - ბინის დაზღვევა",
-    description: "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
-    images: ["/primeLogo.png"],
+    description:
+      "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
+    images: ["/FacebookShare.png"],
   },
 };
 
@@ -44,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ka">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
       </body>

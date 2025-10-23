@@ -52,6 +52,7 @@ export default function Calculator() {
     "monthly" | "quarterly" | "semi-annual" | "annual"
   >("monthly");
   const [showForm, setShowForm] = useState(false);
+  const [expandBreakdown, setExpandBreakdown] = useState(false);
 
   const getTariff = (
     variant: "variant1" | "variant2",
@@ -318,13 +319,25 @@ export default function Calculator() {
 
               {/* Payment Plan Breakdown */}
               <div className="paymentBreakdown">
-                <h3>გადახდის გრაფიკი ({planDetails.label})</h3>
-                {planDetails.payments.map((payment, index) => (
-                  <div key={index} className="paymentItem">
-                    <span>{payment.date}:</span>
-                    <strong>{payment.amount} ₾</strong>
+                <button
+                  className="breakdownToggle"
+                  onClick={() => setExpandBreakdown(!expandBreakdown)}
+                >
+                  <span>გადახდის გრაფიკი ({planDetails.label})</span>
+                  <span className={`arrow ${expandBreakdown ? "open" : ""}`}>
+                    ▼
+                  </span>
+                </button>
+                {expandBreakdown && (
+                  <div className="breakdownContent">
+                    {planDetails.payments.map((payment, index) => (
+                      <div key={index} className="paymentItem">
+                        <span>{payment.date}:</span>
+                        <strong>{payment.amount} ₾</strong>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
             </div>
 
