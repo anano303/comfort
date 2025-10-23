@@ -80,6 +80,7 @@ a {
 .headerContent {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 15px;
 }
 
@@ -635,6 +636,7 @@ h3 {
 .headerContent {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 15px;
 }
 
@@ -1195,6 +1197,7 @@ h3 {
 
   .headerContent {
     gap: 10px;
+    justify-content: space-between;
   }
 
   .logo img {
