@@ -14,7 +14,28 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "PRIME Insurance - ბინის დაზღვევა",
-  description: "PRIME Insurance -  ბინის დაზღვევა",
+  description:
+    "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
+  openGraph: {
+    title: "PRIME Insurance - ბინის დაზღვევა",
+    description: "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
+    images: [
+      {
+        url: "/primeLogo.png",
+        width: 200,
+        height: 200,
+        alt: "PRIME Insurance Logo",
+      },
+    ],
+    url: "https://primeinsurance.ge",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PRIME Insurance - ბინის დაზღვევა",
+    description: "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
+    images: ["/primeLogo.png"],
+  },
 };
 
 export default function RootLayout({
