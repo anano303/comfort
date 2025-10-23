@@ -1231,6 +1231,15 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .twoColumn {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .buttonGroup {
+    grid-template-columns: 1fr;
+  }
+
   .successBox h1 {
     font-size: 26px;
   }
