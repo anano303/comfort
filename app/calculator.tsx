@@ -183,7 +183,7 @@ export default function Calculator() {
                 />
               </div>
               <div className="headerText">
-                <h1>PRIME Insurance</h1>
+                {/* <h1>PRIME Insurance</h1> */}
                 <p>ბინის დაზღვევა</p>
               </div>
             </div>

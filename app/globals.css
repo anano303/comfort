@@ -88,7 +88,7 @@ a {
 }
 
 .logo img {
-  width: 60px;
+  width: 200px;
   height: 60px;
   object-fit: contain;
 }
@@ -643,7 +643,7 @@ h3 {
 }
 
 .logo img {
-  width: 60px;
+  width: 150px;
   height: 60px;
   object-fit: contain;
 }
@@ -1198,7 +1198,7 @@ h3 {
   }
 
   .logo img {
-    width: 50px;
+    width: 140px;
     height: 50px;
   }
 
