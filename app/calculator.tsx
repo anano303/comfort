@@ -71,6 +71,22 @@ export default function Calculator() {
     monthlyPrice + (hasAdditionalCoverage ? additionalCoveragePrice : 0);
   const totalYearly = totalMonthly * 12;
 
+  // Calculate compensation limits based on variant and area
+  const getCompensationLimits = () => {
+    const interiorLimit = variant === "variant1" ? 300 : 500;
+    const furnitureLimit = variant === "variant1" ? 15000 : 20000;
+    const totalInteriorLimit = area * interiorLimit;
+
+    return {
+      interiorPerSqm: interiorLimit,
+      totalInterior: totalInteriorLimit.toLocaleString(),
+      furniture: furnitureLimit.toLocaleString(),
+      total: (totalInteriorLimit + furnitureLimit).toLocaleString(),
+    };
+  };
+
+  const compensationLimits = getCompensationLimits();
+
   // Helper function to format dates
   const getPaymentDate = (monthsToAdd: number): string => {
     const today = new Date();
@@ -201,6 +217,9 @@ export default function Calculator() {
                 >
                   <span>ვარიანტი 1</span>
                   <small>დაბალი დაფარვა</small>
+                  <small className="compensationInfo">
+                    {TARIFFS.variant1.compensationLimit}
+                  </small>
                 </button>
                 <button
                   className={`btn ${variant === "variant2" ? "active" : ""}`}
@@ -208,6 +227,9 @@ export default function Calculator() {
                 >
                   <span>ვარიანტი 2</span>
                   <small>მაღალი დაფარვა</small>
+                  <small className="compensationInfo">
+                    {TARIFFS.variant2.compensationLimit}
+                  </small>
                 </button>
               </div>
             </div>
@@ -344,7 +366,31 @@ export default function Calculator() {
             {/* Compensation Info */}
             <div className="infoBox">
               <h3>ანაზღაურების ლიმიტი</h3>
-              <p>{TARIFFS[variant].compensationLimit}</p>
+              <div className="compensationDetails">
+                <p className="variantInfo">
+                  <strong>
+                    არჩეული: ვარიანტი {variant === "variant1" ? "1" : "2"}
+                  </strong>{" "}
+                  |<strong> ფართი: {area} მ²</strong>
+                </p>
+                <ul className="limitsList">
+                  <li>
+                    <span>შიდა მოპირკეთება:</span>
+                    <strong>
+                      {compensationLimits.interiorPerSqm} ₾/მ² × {area} მ² ={" "}
+                      {compensationLimits.totalInterior} ₾
+                    </strong>
+                  </li>
+                  <li>
+                    <span>ავეჯი და ტექნიკა:</span>
+                    <strong>მაქს. {compensationLimits.furniture} ₾</strong>
+                  </li>
+                  <li className="totalLimit">
+                    <span>სულ ანაზღაურების ლიმიტი:</span>
+                    <strong>{compensationLimits.total} ₾</strong>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             {/* Terms */}
@@ -355,6 +401,57 @@ export default function Calculator() {
                 <li>ავეჯი & ტექნიკა - 150 ₾</li>
                 <li>დამატებითი დაფარვა - 100 ₾</li>
               </ul>
+            </div>
+
+            {/* Covered Risks */}
+            <div className="risksBox">
+              <h3>დაზღვეული რისკები</h3>
+              <div className="riskGrid">
+                <div className="riskItem">
+                  <span className="riskIcon">💧</span>
+                  <p>მეზობლის ბინიდან წყლის ჩამოსვლა</p>
+                </div>
+                <div className="riskItem">
+                  <span className="riskIcon">⚠️</span>
+                  <p>მესამე პირის მართლსაწინააღმდეგო ქმედება</p>
+                </div>
+                <div className="riskItem">
+                  <span className="riskIcon">🌪️</span>
+                  <p>სტიქიური მოვლენები</p>
+                </div>
+                <div className="riskItem">
+                  <span className="riskIcon">🔒</span>
+                  <p>ქურდობა, ძარცვა, ყაჩაღობა</p>
+                </div>
+                <div className="riskItem">
+                  <span className="riskIcon">🚰</span>
+                  <p>წყალგაყვანილობის უეცარი ავარია</p>
+                </div>
+                <div className="riskItem">
+                  <span className="riskIcon">⚡</span>
+                  <p>ელექტროგაყვანილობის უეცარი ავარია</p>
+                </div>
+                <div className="riskItem">
+                  <span className="riskIcon">🔥</span>
+                  <p>გათბობის სისტემის ავარია</p>
+                </div>
+                <div className="riskItem">
+                  <span className="riskIcon">🚿</span>
+                  <p>საკანალიზაციო სისტემის ავარია</p>
+                </div>
+                <div className="riskItem">
+                  <span className="riskIcon">🧯</span>
+                  <p>ხანძარსაქრობი სისტემის ავარია</p>
+                </div>
+                <div className="riskItem">
+                  <span className="riskIcon">🔥</span>
+                  <p>ხანძარი და აფეთქება</p>
+                </div>
+                <div className="riskItem">
+                  <span className="riskIcon">💨</span>
+                  <p>კვამლით დაზიანება ხანძრის შედეგად</p>
+                </div>
+              </div>
             </div>
 
             {/* CTA Button */}

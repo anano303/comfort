@@ -152,6 +152,8 @@ export async function POST(request: NextRequest) {
     const floor = formData.get("floor") as string;
     const apartmentNumber = formData.get("apartmentNumber") as string;
     const address = formData.get("address") as string;
+    const cadastralCode = formData.get("cadastralCode") as string;
+    const buildingYear = formData.get("buildingYear") as string;
     const paymentPlan = formData.get("paymentPlan") as string;
     const idPhotoFile = formData.get("idPhoto") as File | null;
 
@@ -178,7 +180,7 @@ export async function POST(request: NextRequest) {
 
     // Compose email
     const emailContent = `
-    <h2>ახალი დაზღვევის განაცხადი</h2>
+    <h2>ახალი ბინის დაზღვევის განაცხადი - PRIME Insurance</h2>
     
     <h3>მომხმარებლის ინფორმაცია:</h3>
     <ul>
@@ -193,9 +195,11 @@ export async function POST(request: NextRequest) {
       <li><strong>მისამართი:</strong> ${address}</li>
       <li><strong>სართული:</strong> ${floor}</li>
       <li><strong>ბინის ნომერი:</strong> ${apartmentNumber}</li>
+      ${cadastralCode ? `<li><strong>საკადასტრო კოდი:</strong> ${cadastralCode}</li>` : ""}
+      ${buildingYear ? `<li><strong>შენობის აშენების წელი:</strong> ${buildingYear}</li>` : ""}
     </ul>
     
-    <h3>დაზღვევის პარამეტრები:</h3>
+    <h3>PRIME Insurance - ბინის დაზღვევის პარამეტრები:</h3>
     <ul>
       <li><strong>ბინის ფართი:</strong> ${areaSize} მ²</li>
       <li><strong>დაზღვევის ვარიანტი:</strong> ვარიანტი ${
@@ -223,7 +227,7 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail({
       from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
       to: process.env.ADMIN_EMAIL || "info@primeinsurance.ge",
-      subject: `ახალი დაზღვევის განაცხადი - ${fullName}`,
+      subject: `ახალი ბინის დაზღვევის განაცხადი - PRIME Insurance - ${fullName}`,
       html: emailContent,
       attachments,
     });
@@ -232,19 +236,31 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail({
       from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
       to: email,
-      subject: "თქვენი განაცხადი მიღებულია - PRIME Insurance",
+      subject: "თქვენი განაცხადი მიღებულია - PRIME Insurance ბინის დაზღვევა",
       html: `
-      <h2>მადლობთ რომ აგვირჩიეთ!  </h2>
+      <h2>მადლობთ PRIME Insurance-ის არჩევისთვის!</h2>
       <p>მოგესალამებით, ${fullName}!</p>
-      <p>თქვენი დაზღვევის განაცხადი წარმატებით გაიგზავნა.</p>
-      <p>პოლისს მეილზე მიიღებთ 24 საათის განმავლობაში. საჭიროების შემთხვევაში ჩვენი წარმომადგენელი  დაგიკავშირდებათ ${phoneNumber} ნომერზე.</p>
-      <p><strong>დაზღვევის დეტალები:</strong></p>
+      <p>თქვენი ბინის დაზღვევის განაცხადი წარმატებით გაიგზავნა PRIME Insurance-ში.</p>
+      <p>დაზღვევის პოლისს მეილზე მიიღებთ 24 საათის განმავლობაში. საჭიროების შემთხვევაში ჩვენი წარმომადგენელი დაგიკავშირდებათ ${phoneNumber} ნომერზე.</p>
+      <p><strong>PRIME Insurance - ბინის დაზღვევის დეტალები:</strong></p>
       <ul>
         <li>ფართი: ${areaSize} მ²</li>
-        <li>ვარიანტი: ვარიანტი ${variant === "variant1" ? "1" : "2"}</li>
+        <li>დაზღვევის ვარიანტი: ვარიანტი ${
+          variant === "variant1" ? "1" : "2"
+        }</li>
         <li>ყოველთვიური ფასი: ${monthlyPrice} ₾</li>
+        <li>მისამართი: ${address}, სართული ${floor}, ბინა ${apartmentNumber}</li>
+        ${cadastralCode ? `<li>საკადასტრო კოდი: ${cadastralCode}</li>` : ""}
+        ${buildingYear ? `<li>შენობის აშენების წელი: ${buildingYear}</li>` : ""}
       </ul>
-      <p>Best regards,<br/>PRIME Insurance Team</p>
+      <p><strong>გადახდის განრიგი:</strong></p>
+      ${getPaymentPlanDescription(paymentPlan, parseInt(monthlyPrice))}
+      <p>
+        ყველა კითხვის შემთხვევაში, გთხოვთ დაგვიკავშირდეთ:<br/>
+        <strong>PRIME Insurance</strong><br/>
+        ტელეფონი: +995 XXX XXX XXX<br/>
+        მეილი: info@primeinsurance.ge
+      </p>
       `,
     });
 
