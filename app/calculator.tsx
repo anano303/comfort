@@ -279,7 +279,10 @@ export default function Calculator() {
                 />
                 დამატებითი დაფარვა (მესამე პირთა წინაშე პასუხისმგებლობა)
               </label>
-              <p className="info" style={{ marginTop: '8px', fontSize: '0.9em', color: '#666' }}>
+              <p
+                className="info"
+                style={{ marginTop: "8px", fontSize: "0.9em", color: "#666" }}
+              >
                 **თუ მეზობლის ბინას მიადგა ზარალი თქვენი მხრიდან
               </p>
               {hasAdditionalCoverage && (
