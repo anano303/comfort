@@ -53,7 +53,9 @@ export default function Calculator() {
   >("monthly");
   const [showForm, setShowForm] = useState(false);
   const [expandBreakdown, setExpandBreakdown] = useState(false);
+  const [expandRisks, setExpandRisks] = useState(false);
   const breakdownRef = useRef<HTMLDivElement>(null);
+  const risksRef = useRef<HTMLDivElement>(null);
 
   // Close breakdown when clicking outside
   useEffect(() => {
@@ -64,9 +66,15 @@ export default function Calculator() {
       ) {
         setExpandBreakdown(false);
       }
+      if (
+        risksRef.current &&
+        !risksRef.current.contains(event.target as Node)
+      ) {
+        setExpandRisks(false);
+      }
     };
 
-    if (expandBreakdown) {
+    if (expandBreakdown || expandRisks) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
@@ -191,7 +199,6 @@ export default function Calculator() {
   };
 
   const planDetails = getPaymentPlanDetails();
-  const firstPayment = planDetails.payments[0].amount;
 
   return (
     <div className="container">
@@ -430,54 +437,62 @@ export default function Calculator() {
             </div>
 
             {/* Covered Risks */}
-            <div className="risksBox">
-              <h3>დაზღვეული რისკები</h3>
-              <div className="riskGrid">
-                <div className="riskItem">
-                  <span className="riskIcon">💧</span>
-                  <p>მეზობლის ბინიდან წყლის ჩამოსვლა</p>
+            <div className="risksBox" ref={risksRef}>
+              <button
+                className="risksToggle"
+                onClick={() => setExpandRisks(!expandRisks)}
+              >
+                <span>დაზღვეული რისკები</span>
+                <span className={`arrow ${expandRisks ? "open" : ""}`}>▼</span>
+              </button>
+              {expandRisks && (
+                <div className="riskGrid">
+                  <div className="riskItem">
+                    <span className="riskIcon">💧</span>
+                    <p>მეზობლის ბინიდან წყლის ჩამოსვლა</p>
+                  </div>
+                  <div className="riskItem">
+                    <span className="riskIcon">⚠️</span>
+                    <p>მესამე პირის მართლსაწინააღმდეგო ქმედება</p>
+                  </div>
+                  <div className="riskItem">
+                    <span className="riskIcon">🌪️</span>
+                    <p>სტიქიური მოვლენები</p>
+                  </div>
+                  <div className="riskItem">
+                    <span className="riskIcon">🔒</span>
+                    <p>ქურდობა, ძარცვა, ყაჩაღობა</p>
+                  </div>
+                  <div className="riskItem">
+                    <span className="riskIcon">🚰</span>
+                    <p>წყალგაყვანილობის უეცარი ავარია</p>
+                  </div>
+                  <div className="riskItem">
+                    <span className="riskIcon">⚡</span>
+                    <p>ელექტროგაყვანილობის უეცარი ავარია</p>
+                  </div>
+                  <div className="riskItem">
+                    <span className="riskIcon">🔥</span>
+                    <p>გათბობის სისტემის ავარია</p>
+                  </div>
+                  <div className="riskItem">
+                    <span className="riskIcon">🚿</span>
+                    <p>საკანალიზაციო სისტემის ავარია</p>
+                  </div>
+                  <div className="riskItem">
+                    <span className="riskIcon">🧯</span>
+                    <p>ხანძარსაქრობი სისტემის ავარია</p>
+                  </div>
+                  <div className="riskItem">
+                    <span className="riskIcon">🔥</span>
+                    <p>ხანძარი და აფეთქება</p>
+                  </div>
+                  <div className="riskItem">
+                    <span className="riskIcon">💨</span>
+                    <p>კვამლით დაზიანება ხანძრის შედეგად</p>
+                  </div>
                 </div>
-                <div className="riskItem">
-                  <span className="riskIcon">⚠️</span>
-                  <p>მესამე პირის მართლსაწინააღმდეგო ქმედება</p>
-                </div>
-                <div className="riskItem">
-                  <span className="riskIcon">🌪️</span>
-                  <p>სტიქიური მოვლენები</p>
-                </div>
-                <div className="riskItem">
-                  <span className="riskIcon">🔒</span>
-                  <p>ქურდობა, ძარცვა, ყაჩაღობა</p>
-                </div>
-                <div className="riskItem">
-                  <span className="riskIcon">🚰</span>
-                  <p>წყალგაყვანილობის უეცარი ავარია</p>
-                </div>
-                <div className="riskItem">
-                  <span className="riskIcon">⚡</span>
-                  <p>ელექტროგაყვანილობის უეცარი ავარია</p>
-                </div>
-                <div className="riskItem">
-                  <span className="riskIcon">🔥</span>
-                  <p>გათბობის სისტემის ავარია</p>
-                </div>
-                <div className="riskItem">
-                  <span className="riskIcon">🚿</span>
-                  <p>საკანალიზაციო სისტემის ავარია</p>
-                </div>
-                <div className="riskItem">
-                  <span className="riskIcon">🧯</span>
-                  <p>ხანძარსაქრობი სისტემის ავარია</p>
-                </div>
-                <div className="riskItem">
-                  <span className="riskIcon">🔥</span>
-                  <p>ხანძარი და აფეთქება</p>
-                </div>
-                <div className="riskItem">
-                  <span className="riskIcon">💨</span>
-                  <p>კვამლით დაზიანება ხანძრის შედეგად</p>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* CTA Button */}
