@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import ApplicationForm from "./form";
 
@@ -53,11 +53,32 @@ export default function Calculator() {
   >("monthly");
   const [showForm, setShowForm] = useState(false);
   const [expandBreakdown, setExpandBreakdown] = useState(false);
+  const breakdownRef = useRef<HTMLDivElement>(null);
+
+  // Close breakdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        breakdownRef.current &&
+        !breakdownRef.current.contains(event.target as Node)
+      ) {
+        setExpandBreakdown(false);
+      }
+    };
+
+    if (expandBreakdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [expandBreakdown]);
 
   const getTariff = (
     variant: "variant1" | "variant2",
     area: number,
-    isRented: boolean
+    isRented: boolean,
   ) => {
     const tariffs = isRented
       ? TARIFFS[variant].rented
@@ -98,7 +119,7 @@ export default function Calculator() {
       startMonth += 1;
     }
 
-    let date = new Date(today.getFullYear(), startMonth + monthsToAdd, day);
+    const date = new Date(today.getFullYear(), startMonth + monthsToAdd, day);
 
     const monthNames = [
       "იანვარი",
@@ -205,18 +226,18 @@ export default function Calculator() {
             </div>
           </div>
           <div className="calculator">
-            <h1>ბინის დაზღვევის კალკულატორი</h1>
+            <h1>დააზღვიე ბინა ონლაინ </h1>
 
             {/* Variant Selection */}
             <div className="section">
-              <h2>აირჩიეთ დაზღვევის ვარიანტი</h2>
+              <h2>აირჩიეთ დაზღვევის პაკეტი</h2>
               <div className="variantButtons">
                 <button
                   className={`btn ${variant === "variant1" ? "active" : ""}`}
                   onClick={() => setVariant("variant1")}
                 >
-                  <span>ვარიანტი 1</span>
-                  <small>დაბალი დაფარვა</small>
+                  <span>კომფორტი</span>
+                  <small>საბაზისო </small>
                   <small className="compensationInfo">
                     {TARIFFS.variant1.compensationLimit}
                   </small>
@@ -225,8 +246,8 @@ export default function Calculator() {
                   className={`btn ${variant === "variant2" ? "active" : ""}`}
                   onClick={() => setVariant("variant2")}
                 >
-                  <span>ვარიანტი 2</span>
-                  <small>მაღალი დაფარვა</small>
+                  <span>კომფორტი+</span>
+                  <small>პრემიუმი</small>
                   <small className="compensationInfo">
                     {TARIFFS.variant2.compensationLimit}
                   </small>
@@ -290,44 +311,12 @@ export default function Calculator() {
               )}
             </div>
 
-            {/* Payment Plan Selection */}
-            <div className="section">
-              <h2>გადახდის გრაფიკი</h2>
-              <div className="paymentPlanOptions">
-                {(
-                  [
-                    { value: "monthly", label: "ყოველთვიური" },
-                    { value: "quarterly", label: "კვარტლური" },
-                    { value: "semi-annual", label: "ორჯერადი" },
-                    { value: "annual", label: "წლიური (ერთჯერადი)" },
-                  ] as const
-                ).map((option) => (
-                  <label key={option.value} className="paymentPlanLabel">
-                    <input
-                      type="radio"
-                      name="paymentPlan"
-                      value={option.value}
-                      checked={paymentPlan === option.value}
-                      onChange={(e) =>
-                        setPaymentPlan(
-                          e.target.value as
-                            | "monthly"
-                            | "quarterly"
-                            | "semi-annual"
-                            | "annual"
-                        )
-                      }
-                    />
-                    {option.label}
-                  </label>
-                ))}
-              </div>
-            </div>
+            {/* Payment Plan Selection - Now inside the breakdown toggle */}
 
             {/* Price Display */}
             <div className="priceBox">
               <div className="priceRow">
-                <span>ძირითადი დაზღვევა:</span>
+                <span> პრემია</span>
                 <strong>{monthlyPrice} ₾/თვე</strong>
               </div>
               {hasAdditionalCoverage && (
@@ -346,7 +335,7 @@ export default function Calculator() {
               </div>
 
               {/* Payment Plan Breakdown */}
-              <div className="paymentBreakdown">
+              <div className="paymentBreakdown" ref={breakdownRef}>
                 <button
                   className="breakdownToggle"
                   onClick={() => setExpandBreakdown(!expandBreakdown)}
@@ -358,12 +347,43 @@ export default function Calculator() {
                 </button>
                 {expandBreakdown && (
                   <div className="breakdownContent">
-                    {planDetails.payments.map((payment, index) => (
-                      <div key={index} className="paymentItem">
-                        <span>{payment.date}:</span>
-                        <strong>{payment.amount} ₾</strong>
-                      </div>
-                    ))}
+                    <div className="paymentPlanOptions">
+                      {(
+                        [
+                          { value: "monthly", label: "ყოველთვიური" },
+                          { value: "quarterly", label: "კვარტლური" },
+                          { value: "semi-annual", label: "ორჯერადი" },
+                          { value: "annual", label: "წლიური (ერთჯერადი)" },
+                        ] as const
+                      ).map((option) => (
+                        <label key={option.value} className="paymentPlanLabel">
+                          <input
+                            type="radio"
+                            name="paymentPlan"
+                            value={option.value}
+                            checked={paymentPlan === option.value}
+                            onChange={(e) =>
+                              setPaymentPlan(
+                                e.target.value as
+                                  | "monthly"
+                                  | "quarterly"
+                                  | "semi-annual"
+                                  | "annual",
+                              )
+                            }
+                          />
+                          {option.label}
+                        </label>
+                      ))}
+                    </div>
+                    <div className="paymentSchedule">
+                      {planDetails.payments.map((payment, index) => (
+                        <div key={index} className="paymentItem">
+                          <span>{payment.date}:</span>
+                          <strong>{payment.amount} ₾</strong>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -375,7 +395,7 @@ export default function Calculator() {
               <div className="compensationDetails">
                 <p className="variantInfo">
                   <strong>
-                    არჩეული: ვარიანტი {variant === "variant1" ? "1" : "2"}
+                    არჩეული: {variant === "variant1" ? "კომფორტი" : "კომფორტი+"}
                   </strong>{" "}
                   |<strong> ფართი: {area} მ²</strong>
                 </p>

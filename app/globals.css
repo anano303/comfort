@@ -52,10 +52,8 @@ a {
 .container {
   min-height: 100vh;
   background: linear-gradient(135deg, #f5f5f5 0%, #e8f4f8 100%);
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.92),
-      rgba(232, 244, 248, 0.92)
-    ),
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.92), rgba(232, 244, 248, 0.92)),
     url("/Picture1.png");
   background-size: cover;
   background-position: center;
@@ -195,17 +193,18 @@ h3 {
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  background: #f9f9f9;
-  border: 1px solid #e0e0e0;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
   transition: all 0.2s;
+  color: white;
 }
 
 .paymentPlanLabel:hover {
-  background: #f0f0f0;
-  border-color: var(--primary-teal);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(23, 166, 151, 0.5);
 }
 
 .paymentPlanLabel input[type="radio"] {
@@ -254,20 +253,21 @@ h3 {
 }
 
 .breakdownContent {
-  max-height: 600px;
-  overflow-y: auto;
   margin-top: 12px;
   animation: slideDown 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 15px;
 }
 
 @keyframes slideDown {
   from {
     opacity: 0;
-    max-height: 0;
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
-    max-height: 600px;
+    transform: translateY(0);
   }
 }
 
