@@ -19,8 +19,8 @@ function getPaymentPlanLabel(plan: string): string {
 
 function getPaymentPlanDescription(plan: string, monthlyPrice: number): string {
   const monthly = monthlyPrice;
-  const quarterly = monthly * 3;
-  const semiAnnual = monthly * 6;
+  // const quarterly = monthly * 3;
+  // const semiAnnual = monthly * 6;
   const annual = monthly * 12;
 
   // Helper to format dates
@@ -34,7 +34,7 @@ function getPaymentPlanDescription(plan: string, monthlyPrice: number): string {
       startMonth += 1;
     }
 
-    let date = new Date(today.getFullYear(), startMonth + monthsToAdd, day);
+    const date = new Date(today.getFullYear(), startMonth + monthsToAdd, day);
 
     const monthNames = [
       "იანვარი",
@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let attachments: any[] = [];
+    const attachments: { filename: string; content: Buffer }[] = [];
 
     // Handle file attachment
     if (idPhotoFile) {
