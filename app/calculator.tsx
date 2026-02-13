@@ -54,6 +54,14 @@ export default function Calculator() {
   const [showForm, setShowForm] = useState(false);
   const [expandBreakdown, setExpandBreakdown] = useState(false);
   const [expandRisks, setExpandRisks] = useState(false);
+  const [showCallForm, setShowCallForm] = useState(false);
+  const [callFormData, setCallFormData] = useState({
+    fullName: "",
+    phoneNumber: "",
+  });
+  const [callFormStatus, setCallFormStatus] = useState<
+    "idle" | "sending" | "sent" | "error"
+  >("idle");
   const breakdownRef = useRef<HTMLDivElement>(null);
   const risksRef = useRef<HTMLDivElement>(null);
 
@@ -233,7 +241,7 @@ export default function Calculator() {
             </div>
           </div>
           <div className="calculator">
-            <h1>დააზღვიე ბინა ონლაინ </h1>
+            <h1>დააზღვიე ბინა </h1>
 
             {/* Variant Selection */}
             <div className="section">
@@ -243,8 +251,10 @@ export default function Calculator() {
                   className={`btn ${variant === "variant1" ? "active" : ""}`}
                   onClick={() => setVariant("variant1")}
                 >
-                  <span>კომფორტი</span>
-                  <small>საბაზისო </small>
+                  <span style={{ fontSize: "28px", fontWeight: "bold" }}>
+                    სტანდარტი
+                  </span>
+                  {/* <small>საბაზისო </small> */}
                   <small className="compensationInfo">
                     {TARIFFS.variant1.compensationLimit}
                   </small>
@@ -253,8 +263,11 @@ export default function Calculator() {
                   className={`btn ${variant === "variant2" ? "active" : ""}`}
                   onClick={() => setVariant("variant2")}
                 >
-                  <span>კომფორტი+</span>
-                  <small>პრემიუმი</small>
+                  <span style={{ fontSize: "28px", fontWeight: "bold" }}>
+                    {" "}
+                    პრემიუმი
+                  </span>
+                  {/* <small>პრემიუმი</small> */}
                   <small className="compensationInfo">
                     {TARIFFS.variant2.compensationLimit}
                   </small>
@@ -333,11 +346,11 @@ export default function Calculator() {
                 </div>
               )}
               <div className="totalRow">
-                <span>სულ თვეში:</span>
+                <span> თვეში:</span>
                 <strong>{totalMonthly} ₾</strong>
               </div>
               <div className="totalRow">
-                <span>სულ წელიწადში:</span>
+                <span> წელიწადში:</span>
                 <strong>{totalYearly} ₾</strong>
               </div>
 
@@ -402,7 +415,7 @@ export default function Calculator() {
               <div className="compensationDetails">
                 <p className="variantInfo">
                   <strong>
-                    არჩეული: {variant === "variant1" ? "კომფორტი" : "კომფორტი+"}
+                    არჩეული: {variant === "variant1" ? "სტანდარტი" : "პრემიუმი"}
                   </strong>{" "}
                   |<strong> ფართი: {area} მ²</strong>
                 </p>
@@ -495,10 +508,144 @@ export default function Calculator() {
               )}
             </div>
 
-            {/* CTA Button */}
-            <button className="ctaButton" onClick={() => setShowForm(true)}>
-              განაცხადის გაგრძელება
-            </button>
+            {/* CTA Buttons */}
+            <div className="ctaButtons">
+              <button className="ctaButton" onClick={() => setShowForm(true)}>
+                შეიძინე ონლაინ
+              </button>
+              <button
+                style={{
+                  background:
+                    "linear-gradient(135deg, #001f3f 0%, #003d5c 100%)",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  padding: "14px",
+                  fontSize: "16px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  flex: 1,
+                  width: "100%",
+                }}
+                onClick={() => setShowCallForm(true)}
+              >
+                📞 მოითხოვე ზარი
+              </button>
+            </div>
+
+            {/* Call Request Modal */}
+            {showCallForm && (
+              <div
+                className="modalOverlay"
+                onClick={() => {
+                  setShowCallForm(false);
+                  setCallFormStatus("idle");
+                }}
+              >
+                <div
+                  className="modalContent"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    className="modalClose"
+                    onClick={() => {
+                      setShowCallForm(false);
+                      setCallFormStatus("idle");
+                    }}
+                  >
+                    ✕
+                  </button>
+                  <h3>მოითხოვე ზარი</h3>
+                  <p className="modalDescription">
+                    დატოვეთ საკონტაქტო ინფორმაცია და ჩვენი კონსულტანტი
+                    დაგიკავშირდებათ
+                  </p>
+                  {callFormStatus === "sent" ? (
+                    <div className="callFormSuccess">
+                      <span className="successIcon">✓</span>
+                      <p>თქვენი მოთხოვნა მიღებულია! მალე დაგიკავშირდებით.</p>
+                      <button
+                        className="ctaButton"
+                        onClick={() => {
+                          setShowCallForm(false);
+                          setCallFormStatus("idle");
+                        }}
+                      >
+                        დახურვა
+                      </button>
+                    </div>
+                  ) : (
+                    <form
+                      className="callForm"
+                      onSubmit={async (e) => {
+                        e.preventDefault();
+                        setCallFormStatus("sending");
+                        try {
+                          const res = await fetch("/api/request-call", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(callFormData),
+                          });
+                          if (res.ok) {
+                            setCallFormStatus("sent");
+                            setCallFormData({ fullName: "", phoneNumber: "" });
+                          } else {
+                            setCallFormStatus("error");
+                          }
+                        } catch {
+                          setCallFormStatus("error");
+                        }
+                      }}
+                    >
+                      <div className="formGroup">
+                        <label>სახელი და გვარი</label>
+                        <input
+                          type="text"
+                          required
+                          value={callFormData.fullName}
+                          onChange={(e) =>
+                            setCallFormData({
+                              ...callFormData,
+                              fullName: e.target.value,
+                            })
+                          }
+                          placeholder="მაგ: გიორგი გიორგაძე"
+                        />
+                      </div>
+                      <div className="formGroup">
+                        <label>ტელეფონის ნომერი</label>
+                        <input
+                          type="tel"
+                          required
+                          value={callFormData.phoneNumber}
+                          onChange={(e) =>
+                            setCallFormData({
+                              ...callFormData,
+                              phoneNumber: e.target.value,
+                            })
+                          }
+                          placeholder="მაგ: 599 123 456"
+                        />
+                      </div>
+                      {callFormStatus === "error" && (
+                        <p className="errorText">
+                          შეცდომა! გთხოვთ სცადოთ თავიდან.
+                        </p>
+                      )}
+                      <button
+                        type="submit"
+                        className="ctaButton"
+                        disabled={callFormStatus === "sending"}
+                      >
+                        {callFormStatus === "sending"
+                          ? "იგზავნება..."
+                          : "გაგზავნა"}
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </>
       )}

@@ -1427,3 +1427,179 @@ h3 {
   color: var(--primary-teal);
   font-size: 15px;
 }
+
+/* CTA Buttons Container */
+.ctaButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.ctaButtons .ctaButton {
+  flex: 1;
+}
+
+.callButton {
+  background: linear-gradient(
+    135deg,
+    var(--primary-navy) 0%,
+    #003d5c 100%
+  ) !important;
+  color: white !important;
+  border: none !important;
+  font-family: "BPGArialCaps", "BPGArial", sylfaen, arial, tahoma, sans-serif;
+}
+
+.callButton:hover {
+  box-shadow: 0 8px 20px rgba(0, 31, 63, 0.3) !important;
+}
+
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modalContent {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 420px;
+  width: 90%;
+  position: relative;
+  animation: modalSlideIn 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalClose {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.2s;
+}
+
+.modalClose:hover {
+  color: #333;
+}
+
+.modalContent h3 {
+  color: var(--primary-navy);
+  font-size: 20px;
+  margin-bottom: 8px;
+  font-family: "BPGArialCaps", "BPGArial", sylfaen, arial, tahoma, sans-serif;
+}
+
+.modalDescription {
+  color: #222;
+  font-size: 14px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.callForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.callForm .formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.callForm .formGroup label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.callForm .formGroup input {
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  font-family: "BPGArial", sylfaen, arial, tahoma, sans-serif;
+}
+
+.callForm .formGroup input:focus {
+  outline: none;
+  border-color: var(--primary-teal);
+  box-shadow: 0 0 0 3px rgba(23, 166, 151, 0.1);
+}
+
+.callFormSuccess {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.successIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-teal) 0%,
+    var(--primary-teal-dark) 100%
+  );
+  color: white;
+  border-radius: 50%;
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.callFormSuccess p {
+  color: #333;
+  font-size: 16px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.errorText {
+  color: #e74c3c;
+  font-size: 13px;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .ctaButtons {
+    flex-direction: column;
+  }
+}
