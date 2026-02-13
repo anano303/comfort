@@ -203,9 +203,9 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
               <strong>{formData.areaSize} მ²</strong>
             </div>
             <div className="summaryItem">
-              <span>ვარიანტი:</span>
+              <span>პაკეტი:</span>
               <strong>
-                ვარიანტი {formData.variant === "variant1" ? "1" : "2"}
+                {formData.variant === "variant1" ? "სტანდარტი" : "პრემიუმი"}
               </strong>
             </div>
             <div className="summaryItem">
@@ -229,6 +229,15 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
               >
                 📄 RPI-001 18.pdf - დაზღვევის პირობები
               </a>
+              <div className="franchiseSection">
+                <h3>ფრანშიზა</h3>
+                <ul>
+                  <li>შიდა მოპირკეთებისთვის - 5% ზარალიდან, მინ. 100 ₾</li>
+                  <li>ავეჯი & ტექნიკა - 150 ₾</li>
+                  <li>დამატებითი დაფარვა - 100 ₾</li>
+                </ul>
+              </div>
+
               <label className="checkboxLabel">
                 <input
                   type="checkbox"

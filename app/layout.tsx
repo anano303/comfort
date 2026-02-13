@@ -22,26 +22,26 @@ export const metadata: Metadata = {
     icon: "/FacebookShare.png",
   },
   openGraph: {
-    title: "PRIME Insurance - ბინის დაზღვევა",
+    title: "PRIME Insurance - ქონების დაზღვევა",
     description:
       "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
     images: [
       {
-        url: "/FacebookShare.png",
-        width: 200,
-        height: 200,
-        alt: "PRIME Insurance Logo",
+        url: "/og-share.png",
+        width: 960,
+        height: 720,
+        alt: "PRIME Insurance - ქონების დაზღვევა",
       },
     ],
-    url: "https://primeinsurance.ge",
+    url: "https://comfortprime.vercel.app",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PRIME Insurance - ბინის დაზღვევა",
+    title: "PRIME Insurance - ქონების დაზღვევა",
     description:
       "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
-    images: ["/FacebookShare.png"],
+    images: ["/og-share.png"],
   },
 };
 

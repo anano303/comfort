@@ -432,16 +432,6 @@ export default function Calculator() {
               </div>
             </div>
 
-            {/* Terms */}
-            <div className="termsBox">
-              <h3>ფრანშიზა</h3>
-              <ul>
-                <li>შიდა მოპირკეთებისთვის - 5% ზარალიდან, მინ. 100 ₾</li>
-                <li>ავეჯი & ტექნიკა - 150 ₾</li>
-                <li>დამატებითი დაფარვა - 100 ₾</li>
-              </ul>
-            </div>
-
             {/* Covered Risks */}
             <div className="risksBox" ref={risksRef}>
               <button
