@@ -241,8 +241,38 @@ export default function Calculator() {
             </div>
           </div>
           <div className="calculator">
-            <h1>დააზღვიე ბინა</h1>
-            <p className="heroSubtitle">რემონტი · ავეჯი · ტექნიკა</p>
+            <div
+              style={{
+                background: "#333366",
+                margin: "-40px -40px 0 -40px",
+                padding: "12px 20px",
+                textAlign: "center",
+                marginBottom: "25px",
+              }}
+            >
+              <h1
+                style={{
+                  color: "white",
+                  margin: 0,
+                  fontSize: "24px",
+                  letterSpacing: "0px",
+                  fontWeight: 400,
+                }}
+              >
+                ბინის დაზღვევა
+              </h1>
+              <p
+                style={{
+                  color: "rgba(255,255,255,0.8)",
+                  fontSize: "12px",
+                  fontWeight: 400,
+                  letterSpacing: "3px",
+                  margin: "8px 0 0 0",
+                }}
+              >
+                რემონტი · ავეჯი · ტექნიკა
+              </p>
+            </div>
 
             {/* Variant Selection */}
             <div className="section">
@@ -498,8 +528,7 @@ export default function Calculator() {
               </button>
               <button
                 style={{
-                  background:
-                    "linear-gradient(135deg, #001f3f 0%, #003d5c 100%)",
+                  background: "#333366",
                   color: "white",
                   border: "none",
                   borderRadius: "8px",

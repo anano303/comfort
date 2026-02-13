@@ -153,6 +153,24 @@ h1 {
   font-weight: 700;
 }
 
+.heroBanner {
+  background: var(--primary-navy);
+  margin: -40px -40px 0 -40px;
+  padding: 28px 20px;
+  text-align: center;
+  border-radius: 0;
+  margin-bottom: 25px;
+}
+
+.heroBanner h1 {
+  color: white;
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: 2px;
+  font-family: "BPGArialCaps", "BPGArial", sylfaen, arial, tahoma, sans-serif;
+  font-weight: 700;
+}
+
 h2 {
   color: var(--primary-dark);
   font-size: 18px;
@@ -709,6 +727,26 @@ h1 {
   margin-bottom: 25px;
   text-align: center;
   font-size: 28px;
+  font-family: "BPGArialCaps", "BPGArial", sylfaen, arial, tahoma, sans-serif;
+  font-weight: 700;
+}
+
+.heroBanner {
+  background: var(--primary-navy);
+  margin: -40px -40px 0 -40px;
+  padding: 28px 20px;
+  text-align: center;
+  border-radius: 0;
+  margin-bottom: 25px;
+}
+
+.heroBanner h1 {
+  color: white;
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: 2px;
+  font-family: "BPGArialCaps", "BPGArial", sylfaen, arial, tahoma, sans-serif;
+  font-weight: 700;
 }
 
 h2 {
@@ -1645,10 +1683,10 @@ h3 {
 /* Hero Subtitle */
 .heroSubtitle {
   text-align: center;
-  color: var(--primary-teal);
-  font-size: 15px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 2px;
-  margin: -10px 0 25px 0;
+  letter-spacing: 3px;
+  margin: 8px 0 0 0;
   font-family: "BPGArial", sylfaen, arial, tahoma, sans-serif;
 }
