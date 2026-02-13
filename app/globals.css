@@ -1,6 +1,3 @@
-@import url("bpg-arial/css/bpg-arial.css");
-@import url("bpg-arial-caps/css/bpg-arial-caps.css");
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -12,6 +9,15 @@
 @font-face {
   font-family: "BPGArial";
   src: url("/bpg_arial_2009.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "BPGArialCaps";
+  src: url("/bpg_arial_caps.woff2") format("woff2"),
+       url("/bpg_arial_caps.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -324,7 +330,8 @@ h3 {
 .btn span {
   font-weight: 600;
   color: var(--primary-dark);
-  font-family: "BPGArial", sylfaen, arial, tahoma, sans-serif;
+  font-family: "BPGArialCaps", "BPGArial", sylfaen, arial, tahoma, sans-serif;
+  font-size: 18px;
 }
 
 .btn.active span {
@@ -759,6 +766,8 @@ h3 {
 .btn span {
   font-weight: 600;
   color: var(--primary-dark);
+  font-family: "BPGArialCaps", "BPGArial", sylfaen, arial, tahoma, sans-serif;
+  font-size: 18px;
 }
 
 .btn.active span {
@@ -1602,4 +1611,15 @@ h3 {
   .ctaButtons {
     flex-direction: column;
   }
+}
+
+/* Hero Subtitle */
+.heroSubtitle {
+  text-align: center;
+  color: var(--primary-teal);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin: -10px 0 25px 0;
+  font-family: "BPGArial", sylfaen, arial, tahoma, sans-serif;
 }

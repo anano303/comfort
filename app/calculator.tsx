@@ -241,7 +241,10 @@ export default function Calculator() {
             </div>
           </div>
           <div className="calculator">
-            <h1>დააზღვიე ბინა </h1>
+            <h1>დააზღვიე ბინა</h1>
+            <p className="heroSubtitle">
+              რემონტი · ავეჯი · ტექნიკა
+            </p>
 
             {/* Variant Selection */}
             <div className="section">
@@ -251,9 +254,7 @@ export default function Calculator() {
                   className={`btn ${variant === "variant1" ? "active" : ""}`}
                   onClick={() => setVariant("variant1")}
                 >
-                  <span style={{ fontSize: "28px", fontWeight: "bold" }}>
-                    სტანდარტი
-                  </span>
+                  <span>სტანდარტი</span>
                   {/* <small>საბაზისო </small> */}
                   <small className="compensationInfo">
                     {TARIFFS.variant1.compensationLimit}
@@ -263,10 +264,7 @@ export default function Calculator() {
                   className={`btn ${variant === "variant2" ? "active" : ""}`}
                   onClick={() => setVariant("variant2")}
                 >
-                  <span style={{ fontSize: "28px", fontWeight: "bold" }}>
-                    {" "}
-                    პრემიუმი
-                  </span>
+                  <span>პრემიუმი</span>
                   {/* <small>პრემიუმი</small> */}
                   <small className="compensationInfo">
                     {TARIFFS.variant2.compensationLimit}
