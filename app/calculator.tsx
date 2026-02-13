@@ -421,13 +421,12 @@ export default function Calculator() {
                   <li>
                     <span>შიდა მოპირკეთება:</span>
                     <strong>
-                      {compensationLimits.interiorPerSqm} ₾/მ² × {area} მ² ={" "}
                       {compensationLimits.totalInterior} ₾
                     </strong>
                   </li>
                   <li>
                     <span>ავეჯი და ტექნიკა:</span>
-                    <strong>მაქს. {compensationLimits.furniture} ₾</strong>
+                    <strong>{compensationLimits.furniture} ₾</strong>
                   </li>
                   <li className="totalLimit">
                     <span>სულ ანაზღაურების ლიმიტი:</span>
