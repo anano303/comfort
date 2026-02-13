@@ -61,14 +61,14 @@ function getPaymentPlanDescription(plan: string, monthlyPrice: number): string {
       // 11 გადახდა: პირველი 2 თვე, შემდეგ 9 თვე ყოველთვიური
       const monthlyItems = [
         `<li><strong>${getPaymentDate(
-          0
+          0,
         )}</strong> - პირველი შესატანი: <strong>${monthly * 2} ₾</strong></li>`,
       ];
       for (let i = 1; i <= 10; i++) {
         monthlyItems.push(
           `<li><strong>${getPaymentDate(
-            i + 1
-          )}</strong>: <strong>${monthly} ₾</strong></li>`
+            i + 1,
+          )}</strong>: <strong>${monthly} ₾</strong></li>`,
         );
       }
       return `<ul>${monthlyItems.join("")}</ul>`;
@@ -82,16 +82,16 @@ function getPaymentPlanDescription(plan: string, monthlyPrice: number): string {
       return `
       <ul>
         <li><strong>${getPaymentDate(
-          0
+          0,
         )}</strong> - I კვარტალი (1-3 და 12 თვე): <strong>${firstQuarterlyAmount} ₾</strong></li>
         <li><strong>${getPaymentDate(
-          3
+          3,
         )}</strong> - II კვარტალი (4-6 თვე): <strong>${secondQuarterlyAmount} ₾</strong></li>
         <li><strong>${getPaymentDate(
-          6
+          6,
         )}</strong> - III კვარტალი (7-9 თვე): <strong>${thirdQuarterlyAmount} ₾</strong></li>
         <li><strong>${getPaymentDate(
-          10
+          10,
         )}</strong> - IV კვარტალი (10-11 თვე): <strong>${fourthQuarterlyAmount} ₾</strong></li>
         <li><em>სულ: ${annual} ₾</em></li>
       </ul>`;
@@ -100,15 +100,15 @@ function getPaymentPlanDescription(plan: string, monthlyPrice: number): string {
       return `
       <ul>
         <li><strong>${getPaymentDate(
-          0
+          0,
         )}</strong> - პირველი თანხა (1-7 თვე): <strong>${
-        monthly * 7
-      } ₾</strong></li>
+          monthly * 7
+        } ₾</strong></li>
         <li><strong>${getPaymentDate(
-          7
+          7,
         )}</strong> - მეორე თანხა (8-12 თვე): <strong>${
-        monthly * 5
-      } ₾</strong></li>
+          monthly * 5
+        } ₾</strong></li>
         <li><em>სულ: ${annual} ₾</em></li>
       </ul>`;
 
@@ -116,7 +116,7 @@ function getPaymentPlanDescription(plan: string, monthlyPrice: number): string {
       return `
       <ul>
         <li><strong>${getPaymentDate(
-          0
+          0,
         )}</strong> - ერთჯერადი გადახდა: <strong>${annual} ₾</strong></li>
       </ul>`;
 
@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
     const areaSize = formData.get("areaSize") as string;
     const isRented = formData.get("isRented") as string;
     const hasAdditionalCoverage = formData.get(
-      "hasAdditionalCoverage"
+      "hasAdditionalCoverage",
     ) as string;
     const variant = formData.get("variant") as string;
     const monthlyPrice = formData.get("monthlyPrice") as string;
@@ -161,7 +161,7 @@ export async function POST(request: NextRequest) {
     if (!fullName || !phoneNumber || !email) {
       return NextResponse.json(
         { error: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -202,8 +202,8 @@ export async function POST(request: NextRequest) {
     <h3>PRIME Insurance - ბინის დაზღვევის პარამეტრები:</h3>
     <ul>
       <li><strong>ბინის ფართი:</strong> ${areaSize} მ²</li>
-      <li><strong>დაზღვევის ვარიანტი:</strong> ვარიანტი ${
-        variant === "variant1" ? "1" : "2"
+      <li><strong>დაზღვევის პაკეტი:</strong> ${
+        variant === "variant1" ? "სტანდარტი" : "პრემიუმი"
       }</li>
       <li><strong>ყოველთვიური ფასი:</strong> ${monthlyPrice} ₾</li>
       <li><strong>ბინა ქირავდება:</strong> ${
@@ -213,7 +213,7 @@ export async function POST(request: NextRequest) {
         hasAdditionalCoverage === "true" ? "დიახ" : "არა"
       }</li>
       <li><strong>გადახდის გრაფიკი:</strong> ${getPaymentPlanLabel(
-        paymentPlan
+        paymentPlan,
       )}</li>
     </ul>
     
@@ -245,8 +245,8 @@ export async function POST(request: NextRequest) {
       <p><strong>PRIME Insurance - ბინის დაზღვევის დეტალები:</strong></p>
       <ul>
         <li>ფართი: ${areaSize} მ²</li>
-        <li>დაზღვევის ვარიანტი: ვარიანტი ${
-          variant === "variant1" ? "1" : "2"
+        <li>დაზღვევის პაკეტი: ${
+          variant === "variant1" ? "სტანდარტი" : "პრემიუმი"
         }</li>
         <li>ყოველთვიური ფასი: ${monthlyPrice} ₾</li>
         <li>მისამართი: ${address}, სართული ${floor}, ბინა ${apartmentNumber}</li>
@@ -256,23 +256,22 @@ export async function POST(request: NextRequest) {
       <p><strong>გადახდის განრიგი:</strong></p>
       ${getPaymentPlanDescription(paymentPlan, parseInt(monthlyPrice))}
       <p>
-        ყველა კითხვის შემთხვევაში, გთხოვთ დაგვიკავშირდეთ:<br/>
-        <strong>PRIME Insurance</strong><br/>
-        ტელეფონი: +995 XXX XXX XXX<br/>
-        მეილი: info@primeinsurance.ge
+        კითხვების შემთხვევაში, გთხოვთ დაუკავშირდეთ თქვენს პირად მენეჯერს:<br/>
+        <strong>ტელეფონი:</strong> <a href="tel:+995577300480">577 300 480</a><br/>
+        <strong>მეილი:</strong> <a href="mailto:a.beroshvili@primeinsurance.ge">a.beroshvili@primeinsurance.ge</a>
       </p>
       `,
     });
 
     return NextResponse.json(
       { message: "Application submitted successfully" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error submitting application:", error);
     return NextResponse.json(
       { error: "Failed to submit application" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

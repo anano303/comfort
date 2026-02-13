@@ -242,9 +242,7 @@ export default function Calculator() {
           </div>
           <div className="calculator">
             <h1>დააზღვიე ბინა</h1>
-            <p className="heroSubtitle">
-              რემონტი · ავეჯი · ტექნიკა
-            </p>
+            <p className="heroSubtitle">რემონტი · ავეჯი · ტექნიკა</p>
 
             {/* Variant Selection */}
             <div className="section">
@@ -420,9 +418,7 @@ export default function Calculator() {
                 <ul className="limitsList">
                   <li>
                     <span>შიდა მოპირკეთება:</span>
-                    <strong>
-                      {compensationLimits.totalInterior} ₾
-                    </strong>
+                    <strong>{compensationLimits.totalInterior} ₾</strong>
                   </li>
                   <li>
                     <span>ავეჯი და ტექნიკა:</span>
