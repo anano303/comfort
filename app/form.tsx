@@ -65,7 +65,7 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
   const [error, setError] = useState("");
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -127,7 +127,7 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
       formDataToSend.append("isRented", formData.isRented.toString());
       formDataToSend.append(
         "hasAdditionalCoverage",
-        formData.hasAdditionalCoverage.toString()
+        formData.hasAdditionalCoverage.toString(),
       );
       formDataToSend.append("variant", formData.variant);
       formDataToSend.append("monthlyPrice", formData.monthlyPrice.toString());

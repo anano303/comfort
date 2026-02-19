@@ -21,7 +21,7 @@ const TARIFFS = {
       { min: 201, max: 300, price: 40 },
     ],
     compensationLimit:
-      "შიდა მოპირკეთებისთვის - 1კვ.მ-ზე მაქს. 300 ₾; ავეჯი - მაქს. 15,000 ₾",
+      "შიდა მოპირკეთებისთვის ანაზღაურების მაქსიმალური ლიმიტი- 1კვ.მ-ზე  300 ₾; ავეჯი და ტექნიკა -  15,000 ₾",
   },
   variant2: {
     notRented: [
@@ -39,7 +39,7 @@ const TARIFFS = {
       { min: 201, max: 300, price: 65 },
     ],
     compensationLimit:
-      "შიდა მოპირკეთებისთვის - 1კვ.მ-ზე მაქს. 500 ₾; ავეჯი - მაქს. 20,000 ₾",
+      "შიდა მოპირკეთებისთვის ანაზღაურების მაქსიმალური ლიმიტი- 1კვ.მ-ზე  500 ₾; ავეჯი და ტექნიკა -  20,000 ₾",
   },
 };
 
@@ -236,7 +236,7 @@ export default function Calculator() {
               </div>
               <div className="headerText">
                 {/* <h1>PRIME Insurance</h1> */}
-                <p>ბინის დაზღვევა</p>
+                <p>დააზღვიე მარტივად</p>
               </div>
             </div>
           </div>
@@ -326,14 +326,27 @@ export default function Calculator() {
 
             {/* Rental Status */}
             <div className="section">
-              <label>
-                <input
-                  type="checkbox"
-                  checked={isRented}
-                  onChange={(e) => setIsRented(e.target.checked)}
-                />
-                ბინა ქირავდება
-              </label>
+              <label>ბინა ქირავდება?</label>
+              <div className="radioGroup">
+                <label className="radioLabel">
+                  <input
+                    type="radio"
+                    name="rentalStatus"
+                    checked={!isRented}
+                    onChange={() => setIsRented(false)}
+                  />
+                  არ ქირავდება
+                </label>
+                <label className="radioLabel">
+                  <input
+                    type="radio"
+                    name="rentalStatus"
+                    checked={isRented}
+                    onChange={() => setIsRented(true)}
+                  />
+                  ქირავდება
+                </label>
+              </div>
             </div>
 
             {/* Additional Coverage */}
@@ -350,7 +363,7 @@ export default function Calculator() {
                 className="info"
                 style={{ marginTop: "8px", fontSize: "0.9em", color: "#666" }}
               >
-                **თუ მეზობლის ბინას მიადგა ზარალი თქვენი მხრიდან
+                **თუ მეზობლის ბინას მიადგა ზარალი თქვენი ბრალეულობით
               </p>
               {hasAdditionalCoverage && (
                 <p className="info">ანაზღაურების ლიმიტი: 10,000 ₾</p>
