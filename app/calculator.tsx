@@ -127,15 +127,6 @@ export default function Calculator() {
   // Helper function to format dates
   const getPaymentDate = (monthsToAdd: number): string => {
     const today = new Date();
-    const day = 23; // Payment day is 23rd
-
-    // If we're on or past the 23rd, first payment is today; otherwise next month
-    let startMonth = today.getMonth();
-    if (today.getDate() < 23) {
-      startMonth += 1;
-    }
-
-    const date = new Date(today.getFullYear(), startMonth + monthsToAdd, day);
 
     const monthNames = [
       "იანვარი",
@@ -151,6 +142,9 @@ export default function Calculator() {
       "ნოემბერი",
       "დეკემბერი",
     ];
+
+    const day = today.getDate();
+    const date = new Date(today.getFullYear(), today.getMonth() + monthsToAdd, day);
 
     return `${date.getDate()} ${
       monthNames[date.getMonth()]
