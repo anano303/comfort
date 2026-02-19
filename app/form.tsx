@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface FormData {
   fullName: string;
@@ -31,34 +31,78 @@ interface FormProps {
     monthlyPrice: number;
     paymentPlan: "monthly" | "quarterly" | "semi-annual" | "annual";
   };
+  step?: 1 | 2 | 3;
+  onStepChange?: (step: 1 | 2 | 3) => void;
   onClose?: () => void;
 }
 
 const CITIES = ["თბილისი", "ბათუმი", "რუსთავი"];
+const FORM_STORAGE_KEY = "comfort_form_data";
 
-export default function ApplicationForm({ initialData, onClose }: FormProps) {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+function getSavedFormData(): Partial<FormData> | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const saved = localStorage.getItem(FORM_STORAGE_KEY);
+    if (saved) return JSON.parse(saved);
+  } catch {}
+  return null;
+}
+
+function saveFormData(data: FormData) {
+  if (typeof window === "undefined") return;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { idPhotoFile, ...serializable } = data;
+    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(serializable));
+  } catch {}
+}
+
+function clearFormData() {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(FORM_STORAGE_KEY);
+  } catch {}
+}
+
+export default function ApplicationForm({
+  initialData,
+  step: externalStep,
+  onStepChange,
+  onClose,
+}: FormProps) {
+  const step = externalStep || 1;
   const [pdfViewed, setPdfViewed] = useState(false);
 
-  const [formData, setFormData] = useState<FormData>({
-    fullName: "",
-    phoneNumber: "",
-    email: "",
-    idPhotoFile: null,
-    areaSize: initialData?.areaSize || 50,
-    isRented: initialData?.isRented || false,
-    hasAdditionalCoverage: initialData?.hasAdditionalCoverage || false,
-    variant: initialData?.variant || "variant1",
-    monthlyPrice: initialData?.monthlyPrice || 12,
-    city: "თბილისი",
-    floor: "",
-    apartmentNumber: "",
-    address: "",
-    cadastralCode: "",
-    buildingYear: "",
-    pdfAccepted: false,
-    paymentPlan: initialData?.paymentPlan || "monthly",
+  const [formData, setFormData] = useState<FormData>(() => {
+    const saved = getSavedFormData();
+    return {
+      fullName: saved?.fullName || "",
+      phoneNumber: saved?.phoneNumber || "",
+      email: saved?.email || "",
+      idPhotoFile: null,
+      areaSize: initialData?.areaSize || saved?.areaSize || 50,
+      isRented: initialData?.isRented ?? saved?.isRented ?? false,
+      hasAdditionalCoverage:
+        initialData?.hasAdditionalCoverage ??
+        saved?.hasAdditionalCoverage ??
+        false,
+      variant: initialData?.variant || saved?.variant || "variant1",
+      monthlyPrice: initialData?.monthlyPrice || saved?.monthlyPrice || 12,
+      city: saved?.city || "თბილისი",
+      floor: saved?.floor || "",
+      apartmentNumber: saved?.apartmentNumber || "",
+      address: saved?.address || "",
+      cadastralCode: saved?.cadastralCode || "",
+      buildingYear: saved?.buildingYear || "",
+      pdfAccepted: saved?.pdfAccepted || false,
+      paymentPlan: initialData?.paymentPlan || saved?.paymentPlan || "monthly",
+    };
   });
+
+  // Save form data to localStorage on every change
+  useEffect(() => {
+    saveFormData(formData);
+  }, [formData]);
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -93,11 +137,15 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
       }
     }
     setError("");
-    setStep((step + 1) as 1 | 2 | 3);
+    if (onStepChange) {
+      onStepChange((step + 1) as 1 | 2 | 3);
+    }
   };
 
   const handlePrevStep = () => {
-    setStep((step - 1) as 1 | 2 | 3);
+    if (onStepChange) {
+      onStepChange((step - 1) as 1 | 2 | 3);
+    }
     setError("");
   };
 
@@ -152,6 +200,7 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
         throw new Error("Failed to submit application");
       }
 
+      clearFormData();
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "დაფიქსირდა შეცდომა");
@@ -402,17 +451,32 @@ export default function ApplicationForm({ initialData, onClose }: FormProps) {
 
             <div className="formGroup">
               <label>პირადობის მოწმობის სურათი *</label>
-              <input
-                type="file"
-                name="idPhoto"
-                onChange={handleFileChange}
-                accept="image/*,.pdf"
-                required
-                className="fileInput"
-              />
-              {formData.idPhotoFile && (
-                <p className="fileName">ფაილი: {formData.idPhotoFile.name}</p>
-              )}
+              <div
+                className="fileUploadArea"
+                onClick={() => document.getElementById("idPhotoInput")?.click()}
+              >
+                <input
+                  id="idPhotoInput"
+                  type="file"
+                  name="idPhoto"
+                  onChange={handleFileChange}
+                  accept="image/*,.pdf"
+                  style={{ display: "none" }}
+                />
+                {formData.idPhotoFile ? (
+                  <div className="fileUploaded">
+                    <span className="fileIcon">✓</span>
+                    <p className="fileName">{formData.idPhotoFile.name}</p>
+                    <span className="fileChange">შეცვლა</span>
+                  </div>
+                ) : (
+                  <div className="filePrompt">
+                    <span className="uploadIcon">📷</span>
+                    <p>ატვირთეთ ფოტო ან PDF</p>
+                    <span className="uploadHint">დააჭირეთ ასარჩევად</span>
+                  </div>
+                )}
+              </div>
             </div>
 
             {error && <div className="error">{error}</div>}

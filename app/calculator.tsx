@@ -52,6 +52,7 @@ export default function Calculator() {
     "monthly" | "quarterly" | "semi-annual" | "annual"
   >("monthly");
   const [showForm, setShowForm] = useState(false);
+  const [formStep, setFormStep] = useState<1 | 2 | 3>(1);
   const [expandBreakdown, setExpandBreakdown] = useState(false);
   const [expandRisks, setExpandRisks] = useState(false);
   const [showCallForm, setShowCallForm] = useState(false);
@@ -64,6 +65,43 @@ export default function Calculator() {
   >("idle");
   const breakdownRef = useRef<HTMLDivElement>(null);
   const risksRef = useRef<HTMLDivElement>(null);
+
+  // Sync state with URL hash
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith("#form/")) {
+        const step = parseInt(hash.replace("#form/", ""));
+        if (step >= 1 && step <= 3) {
+          setShowForm(true);
+          setFormStep(step as 1 | 2 | 3);
+        }
+      } else if (hash === "#form") {
+        setShowForm(true);
+        setFormStep(1);
+      } else {
+        setShowForm(false);
+        setFormStep(1);
+      }
+    };
+
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, []);
+
+  const openForm = () => {
+    window.location.hash = "#form/1";
+  };
+
+  const closeForm = () => {
+    window.location.hash = "";
+  };
+
+  const onFormStepChange = (step: 1 | 2 | 3) => {
+    setFormStep(step);
+    window.location.hash = `#form/${step}`;
+  };
 
   // Close breakdown when clicking outside
   useEffect(() => {
@@ -108,6 +146,11 @@ export default function Calculator() {
     monthlyPrice + (hasAdditionalCoverage ? additionalCoveragePrice : 0);
   const totalYearly = totalMonthly * 12;
 
+  // Format number with commas (consistent for SSR/client)
+  const formatNumber = (num: number): string => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   // Calculate compensation limits based on variant and area
   const getCompensationLimits = () => {
     const interiorLimit = variant === "variant1" ? 300 : 500;
@@ -116,9 +159,9 @@ export default function Calculator() {
 
     return {
       interiorPerSqm: interiorLimit,
-      totalInterior: totalInteriorLimit.toLocaleString(),
-      furniture: furnitureLimit.toLocaleString(),
-      total: (totalInteriorLimit + furnitureLimit).toLocaleString(),
+      totalInterior: formatNumber(totalInteriorLimit),
+      furniture: formatNumber(furnitureLimit),
+      total: formatNumber(totalInteriorLimit + furnitureLimit),
     };
   };
 
@@ -144,7 +187,11 @@ export default function Calculator() {
     ];
 
     const day = today.getDate();
-    const date = new Date(today.getFullYear(), today.getMonth() + monthsToAdd, day);
+    const date = new Date(
+      today.getFullYear(),
+      today.getMonth() + monthsToAdd,
+      day,
+    );
 
     return `${date.getDate()} ${
       monthNames[date.getMonth()]
@@ -155,7 +202,7 @@ export default function Calculator() {
   const getPaymentPlanDetails = () => {
     switch (paymentPlan) {
       case "monthly":
-        // ყოველთვიური: პირველი შესატანი 2 თვის თანხა, შემდეგ 10 თვის ყოველთვიურად (სულ 11 გადახდა)
+        // ყოველთვიური: პირველი შესატანი 2 თვის თანხა (პირველი+ბოლო), შემდეგ მე-2 თვიდან მე-11 თვემდე ყოველთვიურად
         return {
           label: "ყოველთვიური",
           payments: [
@@ -163,7 +210,7 @@ export default function Calculator() {
             ...Array(10)
               .fill(0)
               .map((_, i) => ({
-                date: getPaymentDate(i + 2),
+                date: getPaymentDate(i + 1),
                 amount: totalMonthly,
               })),
           ],
@@ -203,7 +250,7 @@ export default function Calculator() {
   const planDetails = getPaymentPlanDetails();
 
   return (
-    <div className="container">
+    <div className="container" suppressHydrationWarning>
       {showForm ? (
         <ApplicationForm
           initialData={{
@@ -214,7 +261,9 @@ export default function Calculator() {
             monthlyPrice: totalMonthly,
             paymentPlan,
           }}
-          onClose={() => setShowForm(false)}
+          step={formStep}
+          onStepChange={onFormStepChange}
+          onClose={closeForm}
         />
       ) : (
         <>
@@ -530,7 +579,7 @@ export default function Calculator() {
 
             {/* CTA Buttons */}
             <div className="ctaButtons">
-              <button className="ctaButton" onClick={() => setShowForm(true)}>
+              <button className="ctaButton" onClick={openForm}>
                 შეიძინე ონლაინ
               </button>
               <button

@@ -43,7 +43,11 @@ function getPaymentPlanDescription(plan: string, monthlyPrice: number): string {
     ];
 
     const day = today.getDate();
-    const date = new Date(today.getFullYear(), today.getMonth() + monthsToAdd, day);
+    const date = new Date(
+      today.getFullYear(),
+      today.getMonth() + monthsToAdd,
+      day,
+    );
 
     return `${date.getDate()} ${
       monthNames[date.getMonth()]
@@ -52,7 +56,7 @@ function getPaymentPlanDescription(plan: string, monthlyPrice: number): string {
 
   switch (plan) {
     case "monthly":
-      // 11 გადახდა: პირველი 2 თვე, შემდეგ 9 თვე ყოველთვიური
+      // 11 გადახდა: პირველი შესატანი (1+12 თვე), შემდეგ მე-2 დან მე-11 თვემდე ყოველთვიური
       const monthlyItems = [
         `<li><strong>${getPaymentDate(
           0,
@@ -61,7 +65,7 @@ function getPaymentPlanDescription(plan: string, monthlyPrice: number): string {
       for (let i = 1; i <= 10; i++) {
         monthlyItems.push(
           `<li><strong>${getPaymentDate(
-            i + 1,
+            i,
           )}</strong>: <strong>${monthly} ₾</strong></li>`,
         );
       }
@@ -230,11 +234,12 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail({
       from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
       to: email,
-      subject: "თქვენი განაცხადი მიღებულია - PRIME Insurance ბინის დაზღვევა",
+      subject:
+        "თქვენი განაცხადი მიღებულია - PRIME Insurance company | ბინის დაზღვევა",
       html: `
-      <h2>მადლობთ PRIME Insurance-ის არჩევისთვის!</h2>
+      <h2>მადლობთ სადაზღვევო კომპანია პრაიმის არჩევისთვის!</h2>
       <p>მოგესალამებით, ${fullName}!</p>
-      <p>თქვენი ბინის დაზღვევის განაცხადი წარმატებით გაიგზავნა PRIME Insurance-ში.</p>
+      <p>თქვენი ბინის დაზღვევის განაცხადი წარმატებით გაიგზავნა სადაზღვევო კომპანია პრაიმში.</p>
       <p>დაზღვევის პოლისს მეილზე მიიღებთ 24 საათის განმავლობაში. საჭიროების შემთხვევაში ჩვენი წარმომადგენელი დაგიკავშირდებათ ${phoneNumber} ნომერზე.</p>
       <p><strong>PRIME Insurance - ბინის დაზღვევის დეტალები:</strong></p>
       <ul>
