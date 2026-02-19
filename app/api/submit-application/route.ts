@@ -224,7 +224,7 @@ export async function POST(request: NextRequest) {
     // Send email to admin
     await transporter.sendMail({
       from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
-      to: process.env.ADMIN_EMAIL || "info@primeinsurance.ge",
+      to: process.env.ADMIN_EMAIL || "a.beroshvili@primeinsurance.ge",
       subject: `ახალი ბინის დაზღვევის განაცხადი - PRIME Insurance - ${fullName}`,
       html: emailContent,
       attachments,
