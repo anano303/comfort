@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://primeinsurance.ge"),
+  metadataBase: new URL("https://insure.myprime.ge"),
   title: "PRIME Insurance - ბინის დაზღვევა",
   description:
     "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
         alt: "PRIME Insurance - ქონების დაზღვევა",
       },
     ],
-    url: "https://comfortprime.vercel.app",
+    url: "https://insure.myprime.ge",
     type: "website",
   },
   twitter: {
