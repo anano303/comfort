@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 
+type Locale = "ka" | "en";
+
 interface FormData {
   fullName: string;
   phoneNumber: string;
@@ -34,9 +36,10 @@ interface FormProps {
   step?: 1 | 2 | 3;
   onStepChange?: (step: 1 | 2 | 3) => void;
   onClose?: () => void;
+  locale?: Locale;
 }
 
-const CITIES = ["თბილისი", "ბათუმი", "რუსთავი"];
+const CITIES = { ka: ["თბილისი", "ბათუმი", "რუსთავი"], en: ["Tbilisi", "Batumi", "Rustavi"] };
 const FORM_STORAGE_KEY = "comfort_form_data";
 
 function getSavedFormData(): Partial<FormData> | null {
@@ -69,9 +72,9 @@ export default function ApplicationForm({
   step: externalStep,
   onStepChange,
   onClose,
+  locale = "ka",
 }: FormProps) {
   const step = externalStep || 1;
-  const [pdfViewed, setPdfViewed] = useState(false);
 
   const [formData, setFormData] = useState<FormData>(() => {
     const saved = getSavedFormData();
@@ -127,12 +130,12 @@ export default function ApplicationForm({
 
   const handleNextStep = () => {
     if (step === 1 && !formData.pdfAccepted) {
-      setError("გთხოვთ, დაეთანხმოთ პირობებს");
+      setError(locale === "ka" ? "გთხოვთ, დაეთანხმოთ პირობებს" : "Please accept the terms");
       return;
     }
     if (step === 2) {
       if (!formData.fullName || !formData.phoneNumber || !formData.email) {
-        setError("გთხოვთ, შეავსოთ ყველა ველი");
+        setError(locale === "ka" ? "გთხოვთ, შეავსოთ ყველა ველი" : "Please fill in all fields");
         return;
       }
     }
@@ -155,13 +158,13 @@ export default function ApplicationForm({
     setError("");
 
     if (!formData.address || !formData.floor || !formData.apartmentNumber) {
-      setError("გთხოვთ, შეავსოთ მისამართის ყველა ველი");
+      setError(locale === "ka" ? "გთხოვთ, შეავსოთ მისამართის ყველა ველი" : "Please fill in all address fields");
       setLoading(false);
       return;
     }
 
     if (!formData.idPhotoFile) {
-      setError("გთხოვთ, ატვირთოთ პირადობის მოწმობის ფოტო");
+      setError(locale === "ka" ? "გთხოვთ, ატვირთოთ პირადობის მოწმობის ფოტო" : "Please upload ID photo");
       setLoading(false);
       return;
     }
@@ -203,7 +206,7 @@ export default function ApplicationForm({
       clearFormData();
       setSubmitted(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "დაფიქსირდა შეცდომა");
+      setError(err instanceof Error ? err.message : (locale === "ka" ? "დაფიქსირდა შეცდომა" : "An error occurred"));
     } finally {
       setLoading(false);
     }
@@ -214,16 +217,16 @@ export default function ApplicationForm({
       <div className="container">
         <div className="header">{/* header */}</div>
         <div className="successBox">
-          <h1>✓ თქვენი განაცხადი გაიგზავნა!</h1>
-          <p> 24 სთ განმავლობაში პოლისს მიიღებთ მეილზე </p>
+          <h1>✓ {locale === "ka" ? "თქვენი განაცხადი გაიგზავნა!" : "Your application has been submitted!"}</h1>
+          <p>{locale === "ka" ? "24 სთ განმავლობაში პოლისს მიიღებთ მეილზე" : "You will receive the policy on your email within 24 hours"}</p>
           <p className="email">
-            მეილი გაიგზავნა: <strong>{formData.email}</strong>
+            {locale === "ka" ? "მეილი გაიგზავნა:" : "Email sent to:"} <strong>{formData.email}</strong>
           </p>
           <button
             className="ctaButton"
             onClick={() => window.location.reload()}
           >
-            ახალი განაცხადი
+            {locale === "ka" ? "ახალი განაცხადი" : "New Application"}
           </button>
         </div>
       </div>
@@ -239,26 +242,26 @@ export default function ApplicationForm({
           </button>
         )}
 
-        <h1>დაზღვევის განაცხადი</h1>
+        <h1>{locale === "ka" ? "დაზღვევის განაცხადი" : "Insurance Application"}</h1>
         <p style={{ textAlign: "center", color: "#666", marginBottom: "20px" }}>
-          ნაბიჯი {step} / 3
+          {locale === "ka" ? "ნაბიჯი" : "Step"} {step} / 3
         </p>
 
         <div className="summary">
-          <h3>დაზღვევის პარამეტრები:</h3>
+          <h3>{locale === "ka" ? "დაზღვევის პარამეტრები:" : "Insurance Parameters:"}</h3>
           <div className="summaryGrid">
             <div className="summaryItem">
-              <span>ფართი:</span>
-              <strong>{formData.areaSize} მ²</strong>
+              <span>{locale === "ka" ? "ფართი:" : "Area:"}</span>
+              <strong>{formData.areaSize} {locale === "ka" ? "მ²" : "m²"}</strong>
             </div>
             <div className="summaryItem">
-              <span>პაკეტი:</span>
+              <span>{locale === "ka" ? "პაკეტი:" : "Package:"}</span>
               <strong>
-                {formData.variant === "variant1" ? "სტანდარტი" : "პრემიუმი"}
+                {formData.variant === "variant1" ? (locale === "ka" ? "სტანდარტი" : "Standard") : (locale === "ka" ? "პრემიუმი" : "Premium")}
               </strong>
             </div>
             <div className="summaryItem">
-              <span>ყოველთვიური ფასი:</span>
+              <span>{locale === "ka" ? "ყოველთვიური ფასი:" : "Monthly Price:"}</span>
               <strong>{formData.monthlyPrice} ₾</strong>
             </div>
           </div>
@@ -268,22 +271,22 @@ export default function ApplicationForm({
         {step === 1 && (
           <div className="formContent">
             <div className="pdfSection">
-              <h3>დაზღვევის პირობები</h3>
-              <p>გთხოვთ, გაეცნოთ დაზღვევის ხელშეკრულების პირობებს:</p>
+              <h3>{locale === "ka" ? "დაზღვევის პირობები" : "Insurance Terms"}</h3>
+              <p>{locale === "ka" ? "გთხოვთ, გაეცნოთ დაზღვევის ხელშეკრულების პირობებს:" : "Please read the insurance contract terms:"}</p>
               <a
                 href="/RPI-001 18.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="pdfLink"
               >
-                📄 RPI-001 18.pdf - დაზღვევის პირობები
+                📄 RPI-001 18.pdf - {locale === "ka" ? "დაზღვევის პირობები" : "Insurance Terms"}
               </a>
               <div className="franchiseSection">
-                <h3>ფრანშიზა</h3>
+                <h3>{locale === "ka" ? "ფრანშიზა" : "Franchise"}</h3>
                 <ul>
-                  <li>შიდა მოპირკეთებისთვის - 5% ზარალიდან, მინ. 100 ₾</li>
-                  <li>ავეჯი & ტექნიკა - 150 ₾</li>
-                  <li>დამატებითი დაფარვა - 100 ₾</li>
+                  <li>{locale === "ka" ? "შიდა მოპირკეთებისთვის - 5% ზარალიდან, მინ. 100 ₾" : "Interior finish - 5% of damage, min. 100 ₾"}</li>
+                  <li>{locale === "ka" ? "ავეჯი & ტექნიკა - 150 ₾" : "Furniture & appliances - 150 ₾"}</li>
+                  <li>{locale === "ka" ? "დამატებითი დაფარვა - 100 ₾" : "Additional coverage - 100 ₾"}</li>
                 </ul>
               </div>
 
@@ -294,14 +297,14 @@ export default function ApplicationForm({
                   checked={formData.pdfAccepted}
                   onChange={handleCheckbox}
                 />
-                <span>გავეცანი და ვეთანხმები პირობებს</span>
+                <span>{locale === "ka" ? "გავეცანი და ვეთანხმები პირობებს" : "I have read and agree to the terms"}</span>
               </label>
             </div>
 
             {error && <div className="error">{error}</div>}
 
             <button className="nextButton" onClick={handleNextStep}>
-              შემდეგი ნაბიჯი
+              {locale === "ka" ? "შემდეგი ნაბიჯი" : "Next Step"}
             </button>
           </div>
         )}
@@ -310,37 +313,37 @@ export default function ApplicationForm({
         {step === 2 && (
           <form className="formContent">
             <div className="formGroup">
-              <label>სახელი და გვარი *</label>
+              <label>{locale === "ka" ? "სახელი და გვარი *" : "Full Name *"}</label>
               <input
                 type="text"
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleInputChange}
-                placeholder="მაგ: გიორგი ვაშაძე"
+                placeholder={locale === "ka" ? "მაგ: გიორგი ვაშაძე" : "e.g. John Smith"}
                 required
               />
             </div>
 
             <div className="formGroup">
-              <label>ტელეფონი *</label>
+              <label>{locale === "ka" ? "ტელეფონი *" : "Phone *"}</label>
               <input
                 type="tel"
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
-                placeholder="მაგ: +995 5XX XXX XXX"
+                placeholder={locale === "ka" ? "მაგ: +995 5XX XXX XXX" : "e.g. +995 5XX XXX XXX"}
                 required
               />
             </div>
 
             <div className="formGroup">
-              <label>ელ-ფოსტა *</label>
+              <label>{locale === "ka" ? "ელ-ფოსტა *" : "Email *"}</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                placeholder="თქვენი@მეილი.com"
+                placeholder={locale === "ka" ? "თქვენი@მეილი.com" : "your@email.com"}
                 required
               />
             </div>
@@ -353,14 +356,14 @@ export default function ApplicationForm({
                 className="prevButton"
                 onClick={handlePrevStep}
               >
-                ← უკან
+                ← {locale === "ka" ? "უკან" : "Back"}
               </button>
               <button
                 type="button"
                 className="nextButton"
                 onClick={handleNextStep}
               >
-                შემდეგი ნაბიჯი
+                {locale === "ka" ? "შემდეგი ნაბიჯი" : "Next Step"}
               </button>
             </div>
           </form>
@@ -370,15 +373,15 @@ export default function ApplicationForm({
         {step === 3 && (
           <form onSubmit={handleSubmit} className="formContent">
             <div className="formGroup">
-              <label>ქალაქი *</label>
+              <label>{locale === "ka" ? "ქალაქი *" : "City *"}</label>
               <select
                 name="city"
                 value={formData.city}
                 onChange={handleInputChange}
                 required
               >
-                {CITIES.map((city) => (
-                  <option key={city} value={city}>
+                {CITIES[locale].map((city, idx) => (
+                  <option key={city} value={CITIES.ka[idx]}>
                     {city}
                   </option>
                 ))}
@@ -386,38 +389,38 @@ export default function ApplicationForm({
             </div>
 
             <div className="formGroup">
-              <label>ზუსტი მისამართი *</label>
+              <label>{locale === "ka" ? "ზუსტი მისამართი *" : "Exact Address *"}</label>
               <input
                 type="text"
                 name="address"
                 value={formData.address}
                 onChange={handleInputChange}
-                placeholder="მაგ: ვაჟა-ფშაველას ქ. 12"
+                placeholder={locale === "ka" ? "მაგ: ვაჟა-ფშაველას ქ. 12" : "e.g. 12 Main Street"}
                 required
               />
             </div>
 
             <div className="twoColumn">
               <div className="formGroup">
-                <label>სართული *</label>
+                <label>{locale === "ka" ? "სართული *" : "Floor *"}</label>
                 <input
                   type="text"
                   name="floor"
                   value={formData.floor}
                   onChange={handleInputChange}
-                  placeholder="მაგ: 3"
+                  placeholder={locale === "ka" ? "მაგ: 3" : "e.g. 3"}
                   required
                 />
               </div>
 
               <div className="formGroup">
-                <label>ბინის ნომერი *</label>
+                <label>{locale === "ka" ? "ბინის ნომერი *" : "Apartment # *"}</label>
                 <input
                   type="text"
                   name="apartmentNumber"
                   value={formData.apartmentNumber}
                   onChange={handleInputChange}
-                  placeholder="მაგ: 15"
+                  placeholder={locale === "ka" ? "მაგ: 15" : "e.g. 15"}
                   required
                 />
               </div>
@@ -425,24 +428,24 @@ export default function ApplicationForm({
 
             <div className="twoColumn">
               <div className="formGroup">
-                <label>საკადასტრო კოდი</label>
+                <label>{locale === "ka" ? "საკადასტრო კოდი" : "Cadastral Code"}</label>
                 <input
                   type="text"
                   name="cadastralCode"
                   value={formData.cadastralCode}
                   onChange={handleInputChange}
-                  placeholder="მაგ: 01-12-34-567-890"
+                  placeholder={locale === "ka" ? "მაგ: 01-12-34-567-890" : "e.g. 01-12-34-567-890"}
                 />
               </div>
 
               <div className="formGroup">
-                <label>შენობის აშენების წელი</label>
+                <label>{locale === "ka" ? "შენობის აშენების წელი" : "Building Year"}</label>
                 <input
                   type="number"
                   name="buildingYear"
                   value={formData.buildingYear}
                   onChange={handleInputChange}
-                  placeholder="მაგ: 2015"
+                  placeholder={locale === "ka" ? "მაგ: 2015" : "e.g. 2015"}
                   min="1900"
                   max={new Date().getFullYear()}
                 />
@@ -450,7 +453,7 @@ export default function ApplicationForm({
             </div>
 
             <div className="formGroup">
-              <label>პირადობის მოწმობის სურათი *</label>
+              <label>{locale === "ka" ? "პირადობის მოწმობის სურათი *" : "ID Photo *"}</label>
               <div
                 className="fileUploadArea"
                 onClick={() => document.getElementById("idPhotoInput")?.click()}
@@ -467,13 +470,13 @@ export default function ApplicationForm({
                   <div className="fileUploaded">
                     <span className="fileIcon">✓</span>
                     <p className="fileName">{formData.idPhotoFile.name}</p>
-                    <span className="fileChange">შეცვლა</span>
+                    <span className="fileChange">{locale === "ka" ? "შეცვლა" : "Change"}</span>
                   </div>
                 ) : (
                   <div className="filePrompt">
                     <span className="uploadIcon">📷</span>
-                    <p>ატვირთეთ ფოტო ან PDF</p>
-                    <span className="uploadHint">დააჭირეთ ასარჩევად</span>
+                    <p>{locale === "ka" ? "ატვირთეთ ფოტო ან PDF" : "Upload photo or PDF"}</p>
+                    <span className="uploadHint">{locale === "ka" ? "დააჭირეთ ასარჩევად" : "Click to select"}</span>
                   </div>
                 )}
               </div>
@@ -487,18 +490,19 @@ export default function ApplicationForm({
                 className="prevButton"
                 onClick={handlePrevStep}
               >
-                ← უკან
+                ← {locale === "ka" ? "უკან" : "Back"}
               </button>
               <button type="submit" className="submitButton" disabled={loading}>
-                {loading ? "იგზავნება..." : "✓ განაცხადის გაგზავნა"}
+                {loading ? (locale === "ka" ? "იგზავნება..." : "Sending...") : (locale === "ka" ? "✓ განაცხადის გაგზავნა" : "✓ Submit Application")}
               </button>
             </div>
           </form>
         )}
 
         <p className="disclaimer">
-          თქვენი პირადი მონაცემები დაცული იქნება ჩვენი კონფიდენციალურობის
-          პოლიტიკის მიხედვით
+          {locale === "ka" 
+            ? "თქვენი პირადი მონაცემები დაცული იქნება ჩვენი კონფიდენციალურობის პოლიტიკის მიხედვით"
+            : "Your personal data will be protected according to our privacy policy"}
         </p>
       </div>
     </div>

@@ -3,6 +3,9 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import ApplicationForm from "./form";
+import styles from "./calculator.module.css";
+
+type Locale = "ka" | "en";
 
 const TARIFFS = {
   variant1: {
@@ -44,6 +47,7 @@ const TARIFFS = {
 };
 
 export default function Calculator() {
+  const [locale, setLocale] = useState<Locale>("ka");
   const [variant, setVariant] = useState<"variant1" | "variant2">("variant1");
   const [area, setArea] = useState(50);
   const [isRented, setIsRented] = useState(false);
@@ -264,6 +268,7 @@ export default function Calculator() {
           step={formStep}
           onStepChange={onFormStepChange}
           onClose={closeForm}
+          locale={locale}
         />
       ) : (
         <>
@@ -279,7 +284,22 @@ export default function Calculator() {
               </div>
               <div className="headerText">
                 {/* <h1>PRIME Insurance</h1> */}
-                <p>დააზღვიე მარტივად</p>
+                {/* <p>{locale === "ka" ? "დააზღვიე მარტივად" : "Insure Easily"}</p> */}
+              </div>
+              <div className={styles.langSwitch}>
+                <button
+                  className={locale === "ka" ? styles.active : ""}
+                  onClick={() => setLocale("ka")}
+                >
+                  Geo
+                </button>
+                <span>|</span>
+                <button
+                  className={locale === "en" ? styles.active : ""}
+                  onClick={() => setLocale("en")}
+                >
+                  Eng
+                </button>
               </div>
             </div>
           </div>
@@ -302,7 +322,7 @@ export default function Calculator() {
                   fontWeight: 400,
                 }}
               >
-                ბინის დაზღვევა
+                {locale === "ka" ? "ბინის დაზღვევა" : "Home Insurance"}
               </h1>
               <p
                 style={{
@@ -313,32 +333,36 @@ export default function Calculator() {
                   margin: "8px 0 0 0",
                 }}
               >
-                რემონტი · ავეჯი · ტექნიკა
+                {locale === "ka" ? "რემონტი · ავეჯი · ტექნიკა" : "Interior · Furniture · Electronics"}
               </p>
             </div>
 
             {/* Variant Selection */}
             <div className="section">
-              <h2>აირჩიეთ დაზღვევის პაკეტი</h2>
+              <h2>{locale === "ka" ? "აირჩიეთ დაზღვევის პაკეტი" : "Select Insurance Package"}</h2>
               <div className="variantButtons">
                 <button
                   className={`btn ${variant === "variant1" ? "active" : ""}`}
                   onClick={() => setVariant("variant1")}
                 >
-                  <span>სტანდარტი</span>
+                  <span>{locale === "ka" ? "სტანდარტი" : "Standard"}</span>
                   {/* <small>საბაზისო </small> */}
                   <small className="compensationInfo">
-                    {TARIFFS.variant1.compensationLimit}
+                    {locale === "ka" 
+                      ? TARIFFS.variant1.compensationLimit 
+                      : "Interior limit - 300 ₾/sq.m; Furniture - 15,000 ₾"}
                   </small>
                 </button>
                 <button
                   className={`btn ${variant === "variant2" ? "active" : ""}`}
                   onClick={() => setVariant("variant2")}
                 >
-                  <span>პრემიუმი</span>
+                  <span>{locale === "ka" ? "პრემიუმი" : "Premium"}</span>
                   {/* <small>პრემიუმი</small> */}
                   <small className="compensationInfo">
-                    {TARIFFS.variant2.compensationLimit}
+                    {locale === "ka" 
+                      ? TARIFFS.variant2.compensationLimit 
+                      : "Interior limit - 500 ₾/sq.m; Furniture - 20,000 ₾"}
                   </small>
                 </button>
               </div>
@@ -347,7 +371,7 @@ export default function Calculator() {
             {/* Area Input */}
             <div className="section">
               <label>
-                ბინის ფართი (კვ.მ.): <strong>{area} მ²</strong>
+                {locale === "ka" ? "ბინის ფართი (კვ.მ.):" : "Apartment Area (sq.m.):"} <strong>{area} {locale === "ka" ? "მ²" : "m²"}</strong>
               </label>
               <input
                 type="range"
@@ -369,7 +393,7 @@ export default function Calculator() {
 
             {/* Rental Status */}
             <div className="section">
-              <label>ბინა ქირავდება?</label>
+              <label>{locale === "ka" ? "ბინა ქირავდება?" : "Is the apartment rented?"}</label>
               <div className="radioGroup">
                 <label className="radioLabel">
                   <input
@@ -378,7 +402,7 @@ export default function Calculator() {
                     checked={!isRented}
                     onChange={() => setIsRented(false)}
                   />
-                  არ ქირავდება
+                  {locale === "ka" ? "არ ქირავდება" : "Not rented"}
                 </label>
                 <label className="radioLabel">
                   <input
@@ -387,7 +411,7 @@ export default function Calculator() {
                     checked={isRented}
                     onChange={() => setIsRented(true)}
                   />
-                  ქირავდება
+                  {locale === "ka" ? "ქირავდება" : "Rented"}
                 </label>
               </div>
             </div>
@@ -400,16 +424,22 @@ export default function Calculator() {
                   checked={hasAdditionalCoverage}
                   onChange={(e) => setHasAdditionalCoverage(e.target.checked)}
                 />
-                დამატებითი დაფარვა (მესამე პირთა წინაშე პასუხისმგებლობა)
+                {locale === "ka" 
+                  ? "დამატებითი დაფარვა (მესამე პირთა წინაშე პასუხისმგებლობა)" 
+                  : "Additional coverage (Third party liability)"}
               </label>
               <p
                 className="info"
                 style={{ marginTop: "8px", fontSize: "0.9em", color: "#666" }}
               >
-                **თუ მეზობლის ბინას მიადგა ზარალი თქვენი ბრალეულობით
+                {locale === "ka" 
+                  ? "**თუ მეზობლის ბინას მიადგა ზარალი თქვენი ბრალეულობით"
+                  : "**If your neighbor's apartment is damaged due to your fault"}
               </p>
               {hasAdditionalCoverage && (
-                <p className="info">ანაზღაურების ლიმიტი: 10,000 ₾</p>
+                <p className="info">
+                  {locale === "ka" ? "ანაზღაურების ლიმიტი: 10,000 ₾" : "Compensation limit: 10,000 ₾"}
+                </p>
               )}
             </div>
 
@@ -418,21 +448,21 @@ export default function Calculator() {
             {/* Price Display */}
             <div className="priceBox">
               <div className="priceRow">
-                <span> პრემია</span>
-                <strong>{monthlyPrice} ₾/თვე</strong>
+                <span>{locale === "ka" ? "პრემია" : "Premium"}</span>
+                <strong>{monthlyPrice} ₾/{locale === "ka" ? "თვე" : "month"}</strong>
               </div>
               {hasAdditionalCoverage && (
                 <div className="priceRow">
-                  <span>დამატებითი დაფარვა:</span>
-                  <strong>{additionalCoveragePrice} ₾/თვე</strong>
+                  <span>{locale === "ka" ? "დამატებითი დაფარვა:" : "Additional coverage:"}</span>
+                  <strong>{additionalCoveragePrice} ₾/{locale === "ka" ? "თვე" : "month"}</strong>
                 </div>
               )}
               <div className="totalRow">
-                <span> თვეში:</span>
+                <span>{locale === "ka" ? "თვეში:" : "Monthly:"}</span>
                 <strong>{totalMonthly} ₾</strong>
               </div>
               <div className="totalRow">
-                <span> წელიწადში:</span>
+                <span>{locale === "ka" ? "წელიწადში:" : "Yearly:"}</span>
                 <strong>{totalYearly} ₾</strong>
               </div>
 
@@ -442,7 +472,7 @@ export default function Calculator() {
                   className="breakdownToggle"
                   onClick={() => setExpandBreakdown(!expandBreakdown)}
                 >
-                  <span>გადახდის გრაფიკი ({planDetails.label})</span>
+                  <span>{locale === "ka" ? "გადახდის გრაფიკი" : "Payment Schedule"} ({planDetails.label})</span>
                   <span className={`arrow ${expandBreakdown ? "open" : ""}`}>
                     ▼
                   </span>
@@ -452,10 +482,10 @@ export default function Calculator() {
                     <div className="paymentPlanOptions">
                       {(
                         [
-                          { value: "monthly", label: "ყოველთვიური" },
-                          { value: "quarterly", label: "კვარტლური" },
-                          { value: "semi-annual", label: "ორჯერადი" },
-                          { value: "annual", label: "წლიური (ერთჯერადი)" },
+                          { value: "monthly", label: locale === "ka" ? "ყოველთვიური" : "Monthly" },
+                          { value: "quarterly", label: locale === "ka" ? "კვარტლური" : "Quarterly" },
+                          { value: "semi-annual", label: locale === "ka" ? "ორჯერადი" : "Semi-Annual" },
+                          { value: "annual", label: locale === "ka" ? "წლიური (ერთჯერადი)" : "Annual (One-time)" },
                         ] as const
                       ).map((option) => (
                         <label key={option.value} className="paymentPlanLabel">
@@ -493,25 +523,25 @@ export default function Calculator() {
 
             {/* Compensation Info */}
             <div className="infoBox">
-              <h3>ანაზღაურების ლიმიტი</h3>
+              <h3>{locale === "ka" ? "ანაზღაურების ლიმიტი" : "Compensation Limit"}</h3>
               <div className="compensationDetails">
                 <p className="variantInfo">
                   <strong>
-                    არჩეული: {variant === "variant1" ? "სტანდარტი" : "პრემიუმი"}
+                    {locale === "ka" ? "არჩეული:" : "Selected:"} {variant === "variant1" ? (locale === "ka" ? "სტანდარტი" : "Standard") : (locale === "ka" ? "პრემიუმი" : "Premium")}
                   </strong>{" "}
-                  |<strong> ფართი: {area} მ²</strong>
+                  |<strong> {locale === "ka" ? "ფართი:" : "Area:"} {area} {locale === "ka" ? "მ²" : "m²"}</strong>
                 </p>
                 <ul className="limitsList">
                   <li>
-                    <span>შიდა მოპირკეთება:</span>
+                    <span>{locale === "ka" ? "შიდა მოპირკეთება:" : "Interior finish:"}</span>
                     <strong>{compensationLimits.totalInterior} ₾</strong>
                   </li>
                   <li>
-                    <span>ავეჯი და ტექნიკა:</span>
+                    <span>{locale === "ka" ? "ავეჯი და ტექნიკა:" : "Furniture & appliances:"}</span>
                     <strong>{compensationLimits.furniture} ₾</strong>
                   </li>
                   <li className="totalLimit">
-                    <span>სულ ანაზღაურების ლიმიტი:</span>
+                    <span>{locale === "ka" ? "სულ ანაზღაურების ლიმიტი:" : "Total compensation limit:"}</span>
                     <strong>{compensationLimits.total} ₾</strong>
                   </li>
                 </ul>
@@ -524,54 +554,54 @@ export default function Calculator() {
                 className="risksToggle"
                 onClick={() => setExpandRisks(!expandRisks)}
               >
-                <span>დაზღვეული რისკები</span>
+                <span>{locale === "ka" ? "დაზღვეული რისკები" : "Covered Risks"}</span>
                 <span className={`arrow ${expandRisks ? "open" : ""}`}>▼</span>
               </button>
               {expandRisks && (
                 <div className="riskGrid">
                   <div className="riskItem">
                     <span className="riskIcon">💧</span>
-                    <p>მეზობლის ბინიდან წყლის ჩამოსვლა</p>
+                    <p>{locale === "ka" ? "მეზობლის ბინიდან წყლის ჩამოსვლა" : "Water damage from neighbor's apartment"}</p>
                   </div>
                   <div className="riskItem">
                     <span className="riskIcon">⚠️</span>
-                    <p>მესამე პირის მართლსაწინააღმდეგო ქმედება</p>
+                    <p>{locale === "ka" ? "მესამე პირის მართლსაწინააღმდეგო ქმედება" : "Third party unlawful actions"}</p>
                   </div>
                   <div className="riskItem">
                     <span className="riskIcon">🌪️</span>
-                    <p>სტიქიური მოვლენები</p>
+                    <p>{locale === "ka" ? "სტიქიური მოვლენები" : "Natural disasters"}</p>
                   </div>
                   <div className="riskItem">
                     <span className="riskIcon">🔒</span>
-                    <p>ქურდობა, ძარცვა, ყაჩაღობა</p>
+                    <p>{locale === "ka" ? "ქურდობა, ძარცვა, ყაჩაღობა" : "Theft, robbery, burglary"}</p>
                   </div>
                   <div className="riskItem">
                     <span className="riskIcon">🚰</span>
-                    <p>წყალგაყვანილობის უეცარი ავარია</p>
+                    <p>{locale === "ka" ? "წყალგაყვანილობის უეცარი ავარია" : "Sudden plumbing failure"}</p>
                   </div>
                   <div className="riskItem">
                     <span className="riskIcon">⚡</span>
-                    <p>ელექტროგაყვანილობის უეცარი ავარია</p>
+                    <p>{locale === "ka" ? "ელექტროგაყვანილობის უეცარი ავარია" : "Sudden electrical failure"}</p>
                   </div>
                   <div className="riskItem">
                     <span className="riskIcon">🔥</span>
-                    <p>გათბობის სისტემის ავარია</p>
+                    <p>{locale === "ka" ? "გათბობის სისტემის ავარია" : "Heating system failure"}</p>
                   </div>
                   <div className="riskItem">
                     <span className="riskIcon">🚿</span>
-                    <p>საკანალიზაციო სისტემის ავარია</p>
+                    <p>{locale === "ka" ? "საკანალიზაციო სისტემის ავარია" : "Sewage system failure"}</p>
                   </div>
                   <div className="riskItem">
                     <span className="riskIcon">🧯</span>
-                    <p>ხანძარსაქრობი სისტემის ავარია</p>
+                    <p>{locale === "ka" ? "ხანძარსაქრობი სისტემის ავარია" : "Fire suppression system failure"}</p>
                   </div>
                   <div className="riskItem">
                     <span className="riskIcon">🔥</span>
-                    <p>ხანძარი და აფეთქება</p>
+                    <p>{locale === "ka" ? "ხანძარი და აფეთქება" : "Fire and explosion"}</p>
                   </div>
                   <div className="riskItem">
                     <span className="riskIcon">💨</span>
-                    <p>კვამლით დაზიანება ხანძრის შედეგად</p>
+                    <p>{locale === "ka" ? "კვამლით დაზიანება ხანძრის შედეგად" : "Smoke damage from fire"}</p>
                   </div>
                 </div>
               )}
@@ -580,7 +610,7 @@ export default function Calculator() {
             {/* CTA Buttons */}
             <div className="ctaButtons">
               <button className="ctaButton" onClick={openForm}>
-                შეიძინე ონლაინ
+                {locale === "ka" ? "შეიძინე ონლაინ" : "Buy Online"}
               </button>
               <button
                 style={{
@@ -597,7 +627,7 @@ export default function Calculator() {
                 }}
                 onClick={() => setShowCallForm(true)}
               >
-                📞 მოითხოვე ზარი
+                📞 {locale === "ka" ? "მოითხოვე ზარი" : "Request a Call"}
               </button>
             </div>
 
@@ -623,15 +653,16 @@ export default function Calculator() {
                   >
                     ✕
                   </button>
-                  <h3>მოითხოვე ზარი</h3>
+                  <h3>{locale === "ka" ? "მოითხოვე ზარი" : "Request a Call"}</h3>
                   <p className="modalDescription">
-                    დატოვეთ საკონტაქტო ინფორმაცია და ჩვენი კონსულტანტი
-                    დაგიკავშირდებათ
+                    {locale === "ka" 
+                      ? "დატოვეთ საკონტაქტო ინფორმაცია და ჩვენი კონსულტანტი დაგიკავშირდებათ"
+                      : "Leave your contact information and our consultant will contact you"}
                   </p>
                   {callFormStatus === "sent" ? (
                     <div className="callFormSuccess">
                       <span className="successIcon">✓</span>
-                      <p>თქვენი მოთხოვნა მიღებულია! მალე დაგიკავშირდებით.</p>
+                      <p>{locale === "ka" ? "თქვენი მოთხოვნა მიღებულია! მალე დაგიკავშირდებით." : "Your request has been received! We will contact you soon."}</p>
                       <button
                         className="ctaButton"
                         onClick={() => {
@@ -639,7 +670,7 @@ export default function Calculator() {
                           setCallFormStatus("idle");
                         }}
                       >
-                        დახურვა
+                        {locale === "ka" ? "დახურვა" : "Close"}
                       </button>
                     </div>
                   ) : (
@@ -666,7 +697,7 @@ export default function Calculator() {
                       }}
                     >
                       <div className="formGroup">
-                        <label>სახელი და გვარი</label>
+                        <label>{locale === "ka" ? "სახელი და გვარი" : "Full Name"}</label>
                         <input
                           type="text"
                           required
@@ -677,11 +708,11 @@ export default function Calculator() {
                               fullName: e.target.value,
                             })
                           }
-                          placeholder="მაგ: გიორგი გიორგაძე"
+                          placeholder={locale === "ka" ? "მაგ: გიორგი გიორგაძე" : "e.g. John Smith"}
                         />
                       </div>
                       <div className="formGroup">
-                        <label>ტელეფონის ნომერი</label>
+                        <label>{locale === "ka" ? "ტელეფონის ნომერი" : "Phone Number"}</label>
                         <input
                           type="tel"
                           required
@@ -692,12 +723,12 @@ export default function Calculator() {
                               phoneNumber: e.target.value,
                             })
                           }
-                          placeholder="მაგ: 599 123 456"
+                          placeholder={locale === "ka" ? "მაგ: 599 123 456" : "e.g. 599 123 456"}
                         />
                       </div>
                       {callFormStatus === "error" && (
                         <p className="errorText">
-                          შეცდომა! გთხოვთ სცადოთ თავიდან.
+                          {locale === "ka" ? "შეცდომა! გთხოვთ სცადოთ თავიდან." : "Error! Please try again."}
                         </p>
                       )}
                       <button
@@ -706,8 +737,8 @@ export default function Calculator() {
                         disabled={callFormStatus === "sending"}
                       >
                         {callFormStatus === "sending"
-                          ? "იგზავნება..."
-                          : "გაგზავნა"}
+                          ? (locale === "ka" ? "იგზავნება..." : "Sending...")
+                          : (locale === "ka" ? "გაგზავნა" : "Send")}
                       </button>
                     </form>
                   )}
