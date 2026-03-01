@@ -31,10 +31,33 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   const m = meta[locale as keyof typeof meta] || meta.ka;
+  const baseUrl = process.env.NEXTAUTH_URL || "https://prime.ge";
 
   return {
     title: m.title,
     description: m.description,
+    openGraph: {
+      title: m.title,
+      description: m.description,
+      url: `${baseUrl}/travel/${locale}`,
+      siteName: "PRIME Insurance",
+      images: [
+        {
+          url: `${baseUrl}/travel-og.png`,
+          width: 1200,
+          height: 630,
+          alt: locale === "ka" ? "PRIME Insurance - უცხოელთა დაზღვევა" : "PRIME Insurance - Foreigners Health Insurance",
+        },
+      ],
+      locale: locale === "ka" ? "ka_GE" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: m.title,
+      description: m.description,
+      images: [`${baseUrl}/travel-og.png`],
+    },
   };
 }
 
