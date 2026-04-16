@@ -110,7 +110,7 @@ class Database {
         email: "admin@gmail.com",
       });
       if (!existingAdmin) {
-        const adminPassword = await bcrypt.hash("admin", 10);
+        const adminPassword = await bcrypt.hash("admin123", 10);
         await UserModel.create({
           email: "admin@gmail.com",
           password: adminPassword,
