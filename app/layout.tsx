@@ -1,47 +1,40 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { absoluteUrl, siteUrl } from "@/app/lib/site";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://insure.myprime.ge"),
-  title: "PRIME Insurance - ბინის დაზღვევა",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "PRIME Insurance Georgia",
+    template: "%s | PRIME Insurance Georgia",
+  },
   description:
-    "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
+    "PRIME Insurance Georgia offers online insurance products, including health coverage for foreigners, students, tourists and non-residents in Georgia.",
   icons: {
     icon: "/FacebookShare.png",
   },
   openGraph: {
-    title: "PRIME Insurance - ქონების დაზღვევა",
+    title: "PRIME Insurance Georgia",
     description:
-      "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
+      "Online insurance in Georgia, including health insurance for foreigners, students, tourists and non-residents.",
     images: [
       {
-        url: "/og-share.png",
+        url: absoluteUrl("/og-share.png"),
         width: 960,
         height: 720,
-        alt: "PRIME Insurance - ქონების დაზღვევა",
+        alt: "PRIME Insurance Georgia",
       },
     ],
-    url: "https://insure.myprime.ge",
+    url: absoluteUrl("/"),
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PRIME Insurance - ქონების დაზღვევა",
+    title: "PRIME Insurance Georgia",
     description:
-      "PRIME Insurance -  ბინის დაზღვევის პოლისი. გამოთვალე ფასი მომენტალურად და შეავსე განაცხადი ონლაინ.",
-    images: ["/og-share.png"],
+      "Online insurance in Georgia, including health insurance for foreigners, students, tourists and non-residents.",
+    images: [absoluteUrl("/og-share.png")],
   },
 };
 
@@ -52,7 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ka">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
         {children}
         <Analytics />
       </body>

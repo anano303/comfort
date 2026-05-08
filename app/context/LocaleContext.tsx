@@ -7,7 +7,7 @@ import {
   useCallback,
   ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Locale, getTranslations, TranslationKeys } from "@/app/lib/i18n";
 
 interface LocaleContextType {
@@ -28,14 +28,32 @@ export function LocaleProvider({
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
   const t = getTranslations(locale);
   const router = useRouter();
+  const pathname = usePathname();
 
   const setLocale = useCallback(
     (newLocale: Locale) => {
+      if (newLocale === locale) {
+        return;
+      }
+
       setLocaleState(newLocale);
-      // Keep on same page, just change locale state
-      router.refresh();
+
+      const segments = pathname.split("/");
+      const travelIndex = segments.indexOf("travel");
+
+      if (travelIndex >= 0 && segments[travelIndex + 1]) {
+        segments[travelIndex + 1] = newLocale;
+      }
+
+      const nextPath = segments.join("/") || `/travel/${newLocale}`;
+      const nextSearch =
+        typeof window !== "undefined" ? window.location.search : "";
+      const nextHash =
+        typeof window !== "undefined" ? window.location.hash : "";
+
+      router.push(`${nextPath}${nextSearch}${nextHash}`);
     },
-    [router],
+    [locale, pathname, router],
   );
 
   return (

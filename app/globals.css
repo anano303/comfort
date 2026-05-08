@@ -2447,6 +2447,85 @@ h3 {
   color: white;
 }
 
+/* ===== SEO CONTENT ===== */
+.seoContent {
+  margin-top: 20px;
+}
+
+.seoSection {
+  backdrop-filter: blur(6px);
+}
+
+.seoLead {
+  display: grid;
+  gap: 12px;
+}
+
+.seoLead p,
+.seoCard p,
+.faqItem p {
+  color: var(--text-dark);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.seoChecklist {
+  display: grid;
+  gap: 10px;
+  padding-left: 18px;
+}
+
+.seoChecklist li {
+  color: var(--text-dark);
+  line-height: 1.7;
+}
+
+.seoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.seoCard {
+  border: 1px solid rgba(23, 166, 151, 0.15);
+  border-radius: 14px;
+  padding: 18px;
+  background: linear-gradient(180deg, #f8fcfb 0%, #ffffff 100%);
+}
+
+.seoCard h3 {
+  color: var(--primary-navy);
+  margin-bottom: 10px;
+}
+
+.faqList {
+  display: grid;
+  gap: 10px;
+}
+
+.faqItem {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px 18px;
+  background: #fbfcfe;
+}
+
+.faqItem summary {
+  cursor: pointer;
+  list-style: none;
+  color: var(--primary-navy);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.faqItem summary::-webkit-details-marker {
+  display: none;
+}
+
+.faqItem p {
+  margin-top: 12px;
+}
+
 /* ===== SUCCESS BOX ===== */
 .successBox {
   text-align: center;
@@ -2678,6 +2757,9 @@ h3 {
   }
   .checkboxCardTitle {
     font-size: 13px;
+  }
+  .seoGrid {
+    grid-template-columns: 1fr;
   }
 }
 

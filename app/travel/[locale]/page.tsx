@@ -12,6 +12,194 @@ import {
   GEOTRIP_PRICING,
 } from "@/app/lib/insurance-data";
 
+const siteBaseUrl = "https://insure.myprime.ge";
+
+const travelSeoCopy = {
+  en: {
+    introTitle: "Health Insurance for Foreigners in Georgia",
+    introParagraphs: [
+      "PRIME Insurance helps foreigners, students, expats and non-residents buy Georgian-compliant health cover online. This page is designed for people who need insurance for a residence permit, student status, travel or a longer stay in Georgia.",
+      "Use GEOMED for longer stays such as TRC and student residence applications, and choose GEOTRIP for short visits and tourist stays. Both plans can be started online and issued for travel or immigration-related documentation.",
+    ],
+    audienceTitle: "Who this insurance is for",
+    audienceItems: [
+      "Foreign citizens applying for a temporary residence card (TRC) or extending their stay in Georgia.",
+      "International students who need medical insurance for university registration or visa-related paperwork.",
+      "Tourists, remote workers and short-term visitors who want quick medical protection while staying in Georgia.",
+    ],
+    plansTitle: "Choose the right insurance plan",
+    plans: [
+      {
+        name: "GEOMED",
+        description:
+          "Long-term health and personal accident insurance for 4, 6, 9 or 12 months.",
+        detail:
+          "Best for TRC residence permit applications, students and people planning a longer stay in Georgia.",
+      },
+      {
+        name: "GEOTRIP",
+        description:
+          "Short-term daily travel insurance for visits up to 90 days.",
+        detail:
+          "Best for tourists and short-term visitors who need fast, affordable coverage from 2 GEL per day.",
+      },
+    ],
+    benefitsTitle: "Why foreigners use this page",
+    benefits: [
+      "Online application flow in English and Georgian.",
+      "Coverage options for residence permit, student and travel cases.",
+      "Transparent pricing with GEOMED and GEOTRIP plan selection.",
+      "Useful for searches such as TRC insurance Georgia, student visa insurance Georgia and health insurance for foreigners in Georgia.",
+    ],
+    faqTitle: "Frequently asked questions",
+    faqs: [
+      {
+        question:
+          "Is this insurance suitable for a TRC or residence permit application in Georgia?",
+        answer:
+          "GEOMED is the plan intended for longer stays and residence-related cases. It is commonly used when foreigners need health insurance for residence permit documentation in Georgia.",
+      },
+      {
+        question: "Do students in Georgia need a different insurance plan?",
+        answer:
+          "Students usually choose GEOMED because it covers longer study periods and supports student-related stay requirements better than short-term travel cover.",
+      },
+      {
+        question:
+          "Can I buy travel insurance online before arriving in Georgia?",
+        answer:
+          "Yes. The application can be started online, which is useful for foreigners who want to arrange cover before arrival or soon after entering Georgia.",
+      },
+      {
+        question: "What is the difference between GEOMED and GEOTRIP?",
+        answer:
+          "GEOMED is for longer stays and residence or student use cases, while GEOTRIP is short-term travel insurance for tourists and brief visits.",
+      },
+    ],
+  },
+  ka: {
+    introTitle: "უცხოელთა დაზღვევა საქართველოში",
+    introParagraphs: [
+      "ეს გვერდი განკუთვნილია უცხოელებისთვის, სტუდენტებისთვის, არარეზიდენტებისთვის და ექსპატებისთვის, რომლებსაც საქართველოში სჭირდებათ ჯანმრთელობისა და უბედური შემთხვევის დაზღვევა ონლაინ.",
+      "GEOMED უფრო מתאיםა TRC ბინადრობის ნებართვისა და ხანგრძლივი ყოფნის შემთხვევებისთვის, ხოლო GEOTRIP მოკლევადიანი მოგზაურობისა და ტურისტული ვიზიტებისთვის.",
+    ],
+    audienceTitle: "ვისთვისაა ეს დაზღვევა",
+    audienceItems: [
+      "უცხო ქვეყნის მოქალაქეებისთვის, ვინც საქართველოში ბინადრობის ნებართვას ან ხანგრძლივ ყოფნას გეგმავს.",
+      "საერთაშორისო სტუდენტებისთვის, ვისაც უნივერსიტეტის ან ვიზის მიზნებისთვის სჭირდება დაზღვევა.",
+      "ტურისტებისთვის და მოკლევადიანი ვიზიტორებისთვის, ვისაც სწრაფი ონლაინ დაფარვა სჭირდება.",
+    ],
+    plansTitle: "როგორი გეგმა ავირჩიოთ",
+    plans: [
+      {
+        name: "GEOMED",
+        description:
+          "4, 6, 9 ან 12 თვიანი ჯანმრთელობისა და უბედური შემთხვევის დაზღვევა.",
+        detail:
+          "საუკეთესო არჩევანია TRC, სტუდენტური და ხანგრძლივი ყოფნის შემთხვევებისთვის.",
+      },
+      {
+        name: "GEOTRIP",
+        description: "მოკლევადიანი სამოგზაურო დაზღვევა დღიური ტარიფით.",
+        detail:
+          "მოსახერხებელია ტურისტებისთვის და მოკლე ვიზიტებისთვის, როცა საჭიროა სწრაფი და ხელმისაწვდომი პოლისი.",
+      },
+    ],
+    benefitsTitle: "რატომ ეძებენ ამ გვერდს Google-ში",
+    benefits: [
+      "ონლაინ შევსება ქართულად და ინგლისურად.",
+      "TRC, სტუდენტური და სამოგზაურო შემთხვევებისთვის შესაბამისი გეგმები.",
+      "გამჭვირვალე ფასები და სწრაფი არჩევანი GEOMED და GEOTRIP შორის.",
+      "მიზნობრივი საკვანძო თემები: უცხოელთა დაზღვევა საქართველოში, TRC დაზღვევა, სტუდენტური დაზღვევა.",
+    ],
+    faqTitle: "ხშირად დასმული კითხვები",
+    faqs: [
+      {
+        question:
+          "გამოდგება თუ არა ეს დაზღვევა ბინადრობის ნებართვისთვის საქართველოში?",
+        answer:
+          "ხანგრძლივი ყოფნის და ბინადრობის თემებისთვის ძირითადად გამოიყენება GEOMED, რადგან ის უფრო შესაბამისია residence-related შემთხვევებისთვის.",
+      },
+      {
+        question: "სტუდენტისთვის რომელი გეგმაა უკეთესი?",
+        answer:
+          "უმეტეს შემთხვევაში სტუდენტებისთვის GEOMED არის სწორი არჩევანი, რადგან უფრო ხანგრძლივ პერიოდებს ფარავს.",
+      },
+      {
+        question: "შეიძლება თუ არა ონლაინ შეძენა საქართველოში ჩამოსვლამდე?",
+        answer:
+          "დიახ, განაცხადის დაწყება ონლაინ არის შესაძლებელი, რაც კომფორტულია ჩამოსვლამდე ან ჩამოსვლის შემდეგ სწრაფად მოსაგვარებლად.",
+      },
+      {
+        question: "რა განსხვავებაა GEOMED-სა და GEOTRIP-ს შორის?",
+        answer:
+          "GEOMED განკუთვნილია ხანგრძლივი ყოფნისთვის, ხოლო GEOTRIP მოკლევადიანი მოგზაურობისა და ტურისტული ვიზიტებისთვის.",
+      },
+    ],
+  },
+} as const;
+
+function SeoContentSections() {
+  const { locale } = useLocale();
+  const content = travelSeoCopy[locale];
+
+  return (
+    <div className="seoContent">
+      <section className="calcSection seoSection">
+        <h2>{content.introTitle}</h2>
+        <div className="seoLead">
+          {content.introParagraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      </section>
+
+      <section className="calcSection seoSection">
+        <h2>{content.audienceTitle}</h2>
+        <ul className="seoChecklist">
+          {content.audienceItems.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="calcSection seoSection">
+        <h2>{content.plansTitle}</h2>
+        <div className="seoGrid">
+          {content.plans.map((plan) => (
+            <article key={plan.name} className="seoCard">
+              <h3>{plan.name}</h3>
+              <p>{plan.description}</p>
+              <p>{plan.detail}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="calcSection seoSection">
+        <h2>{content.benefitsTitle}</h2>
+        <ul className="seoChecklist">
+          {content.benefits.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="calcSection seoSection">
+        <h2>{content.faqTitle}</h2>
+        <div className="faqList">
+          {content.faqs.map((faq, index) => (
+            <details key={faq.question} className="faqItem" open={index === 0}>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function InsuranceContent() {
   const { t } = useLocale();
   const searchParams = useSearchParams();
@@ -694,11 +882,26 @@ function InsuranceContent() {
           </div>
         </div>
       )}
+
+      <SeoContentSections />
     </div>
   );
 }
 
 export default function TravelInsurancePage() {
+  const { locale } = useLocale();
+  const content = travelSeoCopy[locale];
+  const pagePath = locale === "ka" ? "/travel/ka" : "/travel/en";
+  const pageUrl = `${siteBaseUrl}${pagePath}`;
+  const faqEntities = content.faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  }));
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "InsuranceAgency",
@@ -755,6 +958,115 @@ export default function TravelInsurancePage() {
       ],
     },
   };
+
+  const schemaRoot = jsonLd as Record<string, unknown>;
+  Object.keys(schemaRoot).forEach((key) => {
+    if (key !== "@context") {
+      delete schemaRoot[key];
+    }
+  });
+
+  schemaRoot["@graph"] = [
+    {
+      "@type": "InsuranceAgency",
+      "@id": `${pageUrl}#agency`,
+      name: "PRIME Insurance Georgia",
+      description:
+        locale === "ka"
+          ? "უცხოელთა, სტუდენტთა და მოგზაურთა ჯანმრთელობის დაზღვევა საქართველოში."
+          : "Health and personal accident insurance for foreigners, students, expats and travelers in Georgia.",
+      url: pageUrl,
+      logo: `${siteBaseUrl}/primeLogo.png`,
+      image: `${siteBaseUrl}/travel-og.png`,
+      telephone: "*1115",
+      email: "a.beroshvili@primeinsurance.ge",
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "GE",
+        addressLocality: "Tbilisi",
+      },
+      areaServed: {
+        "@type": "Country",
+        name: "Georgia",
+      },
+      priceRange: "GEL",
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: content.introTitle,
+      description: content.introParagraphs[0],
+      inLanguage: locale === "ka" ? "ka-GE" : "en-US",
+      isPartOf: {
+        "@type": "WebSite",
+        "@id": `${siteBaseUrl}/#website`,
+        url: siteBaseUrl,
+        name: "PRIME Insurance Georgia",
+      },
+      about: {
+        "@id": `${pageUrl}#agency`,
+      },
+    },
+    {
+      "@type": "Service",
+      "@id": `${pageUrl}#service`,
+      name:
+        locale === "ka"
+          ? "უცხოელთა ჯანმრთელობის დაზღვევა საქართველოში"
+          : "Health Insurance for Foreigners in Georgia",
+      provider: {
+        "@id": `${pageUrl}#agency`,
+      },
+      areaServed: "Georgia",
+      availableChannel: {
+        "@type": "ServiceChannel",
+        serviceUrl: pageUrl,
+      },
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Insurance Plans",
+        itemListElement: [
+          {
+            "@type": "Offer",
+            name: "GEOMED",
+            priceCurrency: "GEL",
+            price: "135",
+            description:
+              "Long-term health insurance for foreigners, students and residence permit use cases in Georgia.",
+          },
+          {
+            "@type": "Offer",
+            name: "GEOTRIP",
+            priceCurrency: "GEL",
+            price: "2",
+            description:
+              "Short-term travel insurance for tourists and short stays in Georgia.",
+          },
+        ],
+      },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${pageUrl}#faq`,
+      mainEntity: faqEntities,
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${pageUrl}#breadcrumbs`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name:
+            locale === "ka"
+              ? "უცხოელთა დაზღვევა საქართველოში"
+              : "Health Insurance for Foreigners in Georgia",
+          item: pageUrl,
+        },
+      ],
+    },
+  ];
 
   return (
     <>
